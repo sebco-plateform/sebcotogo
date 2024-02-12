@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Josefin_Sans } from "next/font/google";
 import "./globals.css";
-import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import DevisBtn from "@/components/DevisBtn";
 
@@ -33,8 +32,6 @@ export default function RootLayout({
     <html lang="fr">
 
       <body className={`${josefin.className} bg-primaryColor `}>
-
-      <NavBar />
 
       <DevisBtn />
 

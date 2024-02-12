@@ -25,7 +25,7 @@ function getItem(
 
 const items: MenuProps['items'] = [
     {
-        label: 'Tous les catégories',
+        label: '',
         key: 'SubMenu',
         icon: <GiHamburgerMenu style={{color: ''}} className={''}/>,
         children: [
@@ -69,7 +69,7 @@ const items: MenuProps['items'] = [
 
 ];
 
-const Menu1: React.FC = () => {
+const MenuResponsive: React.FC = () => {
     const [current, setCurrent] = useState('');
 
     const onClick: MenuProps['onClick'] = (e) => {
@@ -84,4 +84,4 @@ const Menu1: React.FC = () => {
         />;
 };
 
-export default Menu1;
+export default MenuResponsive;

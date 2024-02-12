@@ -8,7 +8,10 @@ import { IoIosNotifications } from "react-icons/io";
 import { TiShoppingCart } from "react-icons/ti";
 import Image from "next/image";
 import Menu1 from "@/components/Menu";
-
+import MenuResponsive from "@/components/MenuResponsive";
+import Tap from "@/components/Tap";
+import Dialogs from "@/components/Dialog";
+import { Badge } from 'antd';
 const navItemWeb1 = [
     {
         name: "Demander un Devis",
@@ -18,7 +21,7 @@ const navItemWeb1 = [
 
     {
         name: "Se Connecter",
-        icon: <FcBusinessman style={{ color: 'white'}} size={24} className={'h-[24px] w-[24px] text-white'}/>,
+        icon: <FcBusinessman  size={24} className={'h-[24px] w-[24px] '}/>,
         route: "/",
     },
 
@@ -30,13 +33,14 @@ const navItemWeb1 = [
 
     {
         name: "",
-        icon: <IoIosNotifications style={{ color: 'white'}} className={'h-[24px] w-[24px] text-white'}/>,
+        icon: (<Badge count={5}> <IoIosNotifications  className={'h-[24px] w-[24px] '}/> </Badge>),
+
         route: "",
     },
 
     {
         name: "",
-        icon: <TiShoppingCart style={{ color: 'white'}} size={24} className={'h-[24px] w-[24px] '}/>,
+        icon: (<Badge count={5}> <TiShoppingCart  size={24} className={'h-[24px] w-[24px] '}/></Badge>) ,
         route: "/",
     },
 
@@ -55,26 +59,26 @@ const navItems1 = [
     {
         name: "Recherche",
         route: '/',
-        icon: <FaSearch style={{ color: 'white'}} size={24} className={'h-[24px] w-[24px] text-white'}/>,
+        icon: <Dialogs color={'black'}  />,
     },
-
+    /*<FaSearch  size={24} className={'h-[24px] w-[24px] '}/>*/
     {
         name: "profil",
         route: '/',
-        icon: <FcBusinessman style={{ color: 'white'}} size={24} className={'h-[24px] w-[24px] text-white'}/>,
+        icon: <FcBusinessman  size={24} className={'h-[24px] w-[24px] '}/>,
     },
 
 
     {
         name: "Notification",
         route: '/',
-        icon: <IoIosNotifications style={{ color: 'white'}} className={'h-[24px] w-[24px] text-white'}/>,
+        icon: (<Badge count={5}> <IoIosNotifications  className={'h-[24px] w-[24px] '}/> </Badge>),
     },
 
     {
         name: "Panier",
         route: '/',
-        icon: <TiShoppingCart style={{ color: 'white'}} size={24} className={'h-[24px] w-[24px] '}/>,
+        icon: (<Badge count={5}> <TiShoppingCart  size={24} className={'h-[24px] w-[24px] '}/></Badge>),
     },
 
 ]
@@ -108,7 +112,7 @@ function NavBar() {
         setCurrentRoute(window.location.pathname)
     }, []);
     return (
-        <nav className={'text-white absolute top-5 px-5 w-full'}>
+        <nav className={' text-black absolute top-5 px-5 w-full'}>
             {/*items 1*/}
             <div className={'flex justify-between'}>
                 {/*image or bugger icone**/}
@@ -120,7 +124,18 @@ function NavBar() {
 
                 {/*icon responsive*/}
                 <div className={'md:hidden w-full'}>
-                    <GiHamburgerMenu style={{color: 'white'}} size={24} className={'h-[24px] w-[24px]'}/>
+                    <Tap
+                        props={
+                            <div className={'flex space-x-2'}>
+                                <GiHamburgerMenu style={{color: 'black'}} className={''}/>
+                            </div>
+                        }
+
+                    />
+                    {/*
+                    <GiHamburgerMenu  size={24} className={'h-[24px] w-[24px]'}/>
+                    */}
+
                 </div>
 
                 {/*Nav items2 web*/}
@@ -129,12 +144,12 @@ function NavBar() {
                         navItemWeb1.map((items, index) => {
                             return <Link href={items.route}
                                          key={index}
-                                         className={'text-white font-light md:text-[15px]'}
+                                         className={' font-light md:text-[15px]'}
                             >
-                                <div className={'flex text-white'}>
-                                    <span className={'mt-[-5px]'}>
+                                <div className={'flex '}>
+                                    <div className={'mt-[-5px]'}>
                                          {items.icon}
-                                    </span>
+                                    </div>
 
                                     {items.name}
                                 </div>
@@ -149,7 +164,7 @@ function NavBar() {
                         navItems1.map((items, index) => {
                             return <Link href={items.route}
                                          key={index}
-                                         className={'text-white'}
+                                         className={''}
                             >
                                 {items.icon}
                             </Link>
@@ -162,8 +177,19 @@ function NavBar() {
             {/*items 2 web*/}
             <div className={'hidden md:flex justify-between md:w-full'}>
 
-                    <div className={'flex space-x-3 w-full text-white ml-5'}>
-                        <Menu1 />
+                    <div className={'flex space-x-3 w-full  ml-5'}>
+                        <Tap
+                            props={
+                                <div className={'flex space-x-2 text-black'}>
+                                    <GiHamburgerMenu style={{color: 'black'}} className={''}/>
+                                    <h1 className={'text-black'}>
+                                        Tous les catégories
+                                    </h1>
+
+                                </div>
+                            }
+
+                        />
                         {/*
                          <GiHamburgerMenu style={{color: 'white'}} size={24} className={'h-[24px] w-[24px]'}/>
                         <p className={'text-white'}>Tous les catégories</p>
@@ -177,7 +203,7 @@ function NavBar() {
                             return <div className={''}>
                             <Link href={items.route}
                                       key={index}
-                                      className={currentRoute == items.route ? 'font-extrabold md:text-[15px] text-[10px] text-white' : '  font-light md:text-[15px] text-[12px] text-white'}
+                                      className={currentRoute == items.route ? 'font-extrabold md:text-[15px] text-[10px] text-white' : '  font-light md:text-[15px] text-[12px] '}
                                 >
                                     {items.name}
                                 </Link>
@@ -196,7 +222,7 @@ function NavBar() {
                         return <div className={''}>
                             <Link href={items.route}
                                   key={index}
-                                  className={currentRoute == items.route ? 'font-extrabold md:text-[15px] text-[10px] text-white' : '  font-light md:text-[15px] text-[12px] text-white'}
+                                  className={currentRoute == items.route ? 'font-extrabold md:text-[15px] text-[10px] text-white' : '  font-light md:text-[15px] text-[12px] '}
                             >
                                 {items.name}
                             </Link>
