@@ -105,22 +105,85 @@ const navItems2 = [
         route: '/',
     },
 ]
+
+
+const mockData = [
+    "Résultat 1",
+    "Résultat 2",
+    "Autre résultat",
+    "Encore un résultat",
+    "Dernier résultat"
+];
 function NavBar() {
     const [currentRoute, setCurrentRoute] = useState("");
+    const [query, setQuery] = useState('');
+    const [results, setResults] = useState<string[]>([]);
+    const [actif, setActif] = useState(false);
+
 
     useEffect(() => {
         setCurrentRoute(window.location.pathname)
     }, []);
+
+    const handleChange = (e: any) => {
+        const searchTerm = e.target.value;
+        if(searchTerm.trim() !== '') {
+            setActif(true)
+            setQuery(searchTerm);
+            // Simulation d'une recherche avec un tableau de données statique
+            const filteredResults = mockData.filter(item =>
+                item.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setResults(filteredResults);
+        }
+        else  {
+            setActif(false)
+            setQuery('');
+            setResults([]);
+        }
+
+    };
     return (
-        <nav className={' text-black absolute top-5 px-5 w-full'}>
+        <nav className={'bg-white md:bg-transparent py-5 text-black absolute top-0 px-5 w-full'}>
             {/*items 1*/}
-            <div className={'flex justify-between'}>
+            <nav className={'flex justify-between'}>
                 {/*image or bugger icone**/}
 
                 {/*image*/}
                 <div className={'hidden md:flex w-full'}>
                     <Image src={"/icons/logo.svg"} alt={"logo"} width={100} height={100} className={''} quality={100}/>
                 </div>
+
+                {/*searche bar*/}
+                <div className={'md:block hidden absolute left-[15%] top-3'}>
+                    <div
+                        className={'flex space-x-2 bg-white border-2 border-black h-[50px] w-auto rounded-[20px] px-3'}>
+                        <form>
+                            <input
+                                className={'md:w-[320px] h-9 mt-2 ml-2 bg-white outline-0 border-0 focus:border-0 focus:outline-0 '}
+                                placeholder={'Trouver un Produit'}
+                                type="text"
+                                value={query}
+                                onChange={handleChange}
+
+                            />
+                        </form>
+
+                        <div className={'bg-buttonColor p-3  w-[100px] my-1 rounded-[20px] flex space-x-2'}>
+                            <FaSearch className={'w-[15px] h-[15px] '} color={'white'}/>
+                            <h1 className={'text-[18px] text-white mt-[-5px]'}>search</h1>
+                        </div>
+                    </div>
+
+                    <div className={`${actif ? 'block bg-gray-100 w-[600px] p-5 rounded-[20px] h-auto mt-5' : 'hidden'} `}>
+                        <ul>
+                            {results.map((result, index) => (
+                                <li key={index}>{result}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+
 
                 {/*icon responsive*/}
                 <div className={'md:hidden w-full'}>
@@ -136,77 +199,77 @@ function NavBar() {
                     <GiHamburgerMenu  size={24} className={'h-[24px] w-[24px]'}/>
                     */}
 
-                </div>
-
-                {/*Nav items2 web*/}
-                <div className={'hidden  md:flex space-x-5 w-[800px] relative top-5'}>
-                    {
-                        navItemWeb1.map((items, index) => {
-                            return <Link href={items.route}
-                                         key={index}
-                                         className={' font-light md:text-[15px]'}
-                            >
-                                <div className={'flex '}>
-                                    <div className={'mt-[-5px]'}>
-                                         {items.icon}
-                                    </div>
-
-                                    {items.name}
-                                </div>
-                            </Link>
-                        })
-                    }
-                </div>
-
-                {/*Nav items2 responsive*/}
-                <div className={'md:hidden flex space-x-5'}>
-                    {
-                        navItems1.map((items, index) => {
-                            return <Link href={items.route}
-                                         key={index}
-                                         className={''}
-                            >
-                                {items.icon}
-                            </Link>
-                        })
-                    }
-                </div>
             </div>
 
-
-            {/*items 2 web*/}
-            <div className={'hidden md:flex justify-between md:w-full'}>
-
-                    <div className={'flex space-x-3 w-full  ml-5'}>
-                        <Tap
-                            props={
-                                <div className={'flex space-x-2 text-black'}>
-                                    <GiHamburgerMenu style={{color: 'black'}} className={''}/>
-                                    <h1 className={'text-black'}>
-                                        Tous les catégories
-                                    </h1>
-
+            {/*Nav items2 web*/}
+            <div className={'hidden  md:flex space-x-5 w-[800px] relative top-5'}>
+                {
+                    navItemWeb1.map((items, index) => {
+                        return <Link href={items.route}
+                                     key={index}
+                                     className={' font-light md:text-[15px]'}
+                        >
+                            <div className={'flex '}>
+                                <div className={'mt-[-5px]'}>
+                                    {items.icon}
                                 </div>
-                            }
 
-                        />
-                        {/*
+                                {items.name}
+                            </div>
+                        </Link>
+                    })
+                }
+            </div>
+
+            {/*Nav items2 responsive*/}
+            <div className={'md:hidden flex space-x-5'}>
+                {
+                    navItems1.map((items, index) => {
+                        return <Link href={items.route}
+                                     key={index}
+                                     className={''}
+                        >
+                            {items.icon}
+                        </Link>
+                    })
+                }
+            </div>
+        </nav>
+
+    {/*items 2 web*/
+    }
+    <div className={'hidden md:flex justify-between md:w-full'}>
+
+        <div className={'flex space-x-3 w-full  ml-5'}>
+            <Tap
+                props={
+                    <div className={'flex space-x-2 text-black'}>
+                        <GiHamburgerMenu style={{color: 'black'}} className={''}/>
+                        <h1 className={'text-black'}>
+                            Tous les catégories
+                        </h1>
+
+                    </div>
+                }
+
+            />
+            {/*
                          <GiHamburgerMenu style={{color: 'white'}} size={24} className={'h-[24px] w-[24px]'}/>
                         <p className={'text-white'}>Tous les catégories</p>
                         */}
-                    </div>
+        </div>
 
 
-                <div className={'flex space-x-2 w-[1000px]'}>
-                    {
-                        navItems2.map((items, index) => {
-                            return <div className={''}>
-                            <Link href={items.route}
-                                      key={index}
-                                      className={currentRoute == items.route ? 'font-extrabold md:text-[15px] text-[10px] text-white' : '  font-light md:text-[15px] text-[12px] '}
-                                >
-                                    {items.name}
-                                </Link>
+        <div className={'flex space-x-2 w-[1000px]'}>
+            {
+                navItems2.map((items, index) => {
+                    return <div className={''} key={index}>
+                        <Link href={items.route}
+
+                              className={currentRoute == items.route ? 'font-extrabold md:text-[15px] text-[10px] text-white' : '  font-light md:text-[15px] text-[12px] '}
+                        >
+                            {items.name}
+                        </Link>
                             </div>
                         })
                     }
@@ -219,9 +282,8 @@ function NavBar() {
             <div className={'md:hidden flex justify-between md:w-full'}>
                 {
                     navItems2.map((items, index) => {
-                        return <div className={''}>
+                        return <div className={''} key={index}>
                             <Link href={items.route}
-                                  key={index}
                                   className={currentRoute == items.route ? 'font-extrabold md:text-[15px] text-[10px] text-white' : '  font-light md:text-[15px] text-[12px] '}
                             >
                                 {items.name}

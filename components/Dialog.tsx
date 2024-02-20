@@ -45,6 +45,7 @@ export default function Dialogs({color}: { color: string }) {
         } else {
             setActif(false)
             setResults([]);
+            setQuery("");
         }
 
     };
@@ -97,25 +98,23 @@ export default function Dialogs({color}: { color: string }) {
                                     <Dialog.Description as={"div"}>
                                         <div className="mt-2">
                                             {/*search par*/}
-                                            <div className={''}>
+                                            <div className={'h-[300px]'}>
                                                 <div
-                                                    className={'flex space-x-2 bg-gray-400 h-[50px] w-full rounded-[20px] px-3'}>
+                                                    className={'flex space-x-2 bg-gray-50 h-[50px] w-auto rounded-[20px] px-3'}>
                                                     <input
-                                                        className={' h-9 mt-2 ml-2 bg-gray-400 outline-0 border-0 focus:border-0 focus:outline-0 '}
+                                                        className={' h-9 mt-2 ml-2 bg-gray-50 outline-0 border-0 focus:border-0 focus:outline-0 '}
                                                         placeholder={'Trouver un Produit'}
                                                         type="text"
                                                         value={query}
                                                         onChange={handleChange}
 
                                                     />
-                                                    <div
-                                                        className={' p-3  w-[50px] my-1 '}>
-                                                        <FaSearch className={'w-[15px] h-[15px] '} color={'blue/90'}/>
 
-                                                    </div>
+                                                        <FaSearch className={'w-[25px] h-[25px] left-8 top-3 relative'} color={'blue/90'}/>
+
                                                 </div>
                                                 <div
-                                                    className={`${actif ? 'block bg-gray-400  w-full  p-5 rounded-[20px] h-auto mt-3' : 'hidden'} `}>
+                                                    className={`${actif ? 'block bg-gray-50  w-full  p-5 rounded-[20px] h-auto mt-3' : 'hidden'} `}>
                                                     <ul>
                                                         {results.map((result, index) => (
                                                             <li key={index}>{result}</li>

@@ -3,6 +3,7 @@ import { Inter, Josefin_Sans } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import DevisBtn from "@/components/DevisBtn";
+import {Toaster} from "@/components/ui/toaster";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"] ,
@@ -31,13 +32,15 @@ export default function RootLayout({
   return (
     <html lang="fr">
 
-      <body className={`${josefin.className} bg-primaryColor `}>
+      <body className={`${josefin.className} bg-gray-100 `}>
 
       <DevisBtn />
 
         {children}
 
       <Footer/>
+
+      <Toaster />
       </body>
 
     </html>

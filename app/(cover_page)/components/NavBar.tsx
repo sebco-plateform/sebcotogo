@@ -200,9 +200,9 @@ function NavBar() {
                 <div className={'flex space-x-2 w-[1000px]'}>
                     {
                         navItems2.map((items, index) => {
-                            return <div className={''}>
+                            return <div className={''} key={index}>
                                 <Link href={items.route}
-                                      key={index}
+
                                       className={currentRoute == items.route ? 'font-extrabold md:text-[15px] text-[10px] text-white' : '  font-light md:text-[15px] text-[12px] text-white'}
                                 >
                                     {items.name}
@@ -219,9 +219,9 @@ function NavBar() {
             <div className={'md:hidden flex justify-between md:w-full'}>
                 {
                     navItems2.map((items, index) => {
-                        return <div className={''}>
+                        return <div className={''} key={index}>
                             <Link href={items.route}
-                                  key={index}
+
                                   className={currentRoute == items.route ? 'font-extrabold md:text-[15px] text-[10px] text-white' : '  font-light md:text-[15px] text-[12px] text-white'}
                             >
                                 {items.name}

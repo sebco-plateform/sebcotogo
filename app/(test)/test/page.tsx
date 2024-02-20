@@ -7,8 +7,6 @@ import Tap from "@/components/Tap";
 const Test = () => {
     return (
         <div className={'mt-[20%]'}>
-            <Tap />
-
             {/*<Menu2/>*/}
         </div>
     );
