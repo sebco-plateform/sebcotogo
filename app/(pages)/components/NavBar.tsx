@@ -12,36 +12,37 @@ import MenuResponsive from "@/components/MenuResponsive";
 import Tap from "@/components/Tap";
 import Dialogs from "@/components/Dialog";
 import { Badge } from 'antd';
+import SearchNav from '@/components/SearchNav';
 const navItemWeb1 = [
     {
         name: "Demander un Devis",
         icon: "",
-        route: "/",
+        route: "/devis",
     },
 
     {
         name: "Se Connecter",
         icon: <FcBusinessman  size={24} className={'h-[24px] w-[24px] '}/>,
-        route: "/",
+        route: "/login",
     },
 
     {
         name: "S'inscrire",
         icon: "",
-        route: "/",
+        route: "/registre",
     },
 
     {
         name: "",
         icon: (<Badge count={5}> <IoIosNotifications  className={'h-[24px] w-[24px] '}/> </Badge>),
 
-        route: "",
+        route: "/notifications",
     },
 
     {
         name: "",
         icon: (<Badge count={5}> <TiShoppingCart  size={24} className={'h-[24px] w-[24px] '}/></Badge>) ,
-        route: "/",
+        route: "/cart",
     },
 
     {
@@ -64,20 +65,20 @@ const navItems1 = [
     /*<FaSearch  size={24} className={'h-[24px] w-[24px] '}/>*/
     {
         name: "profil",
-        route: '/',
+        route: '/login',
         icon: <FcBusinessman  size={24} className={'h-[24px] w-[24px] '}/>,
     },
 
 
     {
-        name: "Notification",
-        route: '/',
+        name: "",
+        route: '/notifications',
         icon: (<Badge count={5}> <IoIosNotifications  className={'h-[24px] w-[24px] '}/> </Badge>),
     },
 
     {
-        name: "Panier",
-        route: '/',
+        name: "",
+        route: '/cart',
         icon: (<Badge count={5}> <TiShoppingCart  size={24} className={'h-[24px] w-[24px] '}/></Badge>),
     },
 
@@ -90,11 +91,11 @@ const navItems2 = [
     },
     {
         name: 'Nos services',
-        route: '/',
+        route: '/categories',
     },
     {
         name: 'A propos',
-        route: '/',
+        route: '/about',
     },
     {
         name: 'Notre equipe',
@@ -102,49 +103,23 @@ const navItems2 = [
     },
     {
         name: 'Historique des achats',
-        route: '/',
+        route: '/history',
     },
 ]
 
 
-const mockData = [
-    "Résultat 1",
-    "Résultat 2",
-    "Autre résultat",
-    "Encore un résultat",
-    "Dernier résultat"
-];
+
 function NavBar() {
     const [currentRoute, setCurrentRoute] = useState("");
-    const [query, setQuery] = useState('');
-    const [results, setResults] = useState<string[]>([]);
-    const [actif, setActif] = useState(false);
 
 
     useEffect(() => {
         setCurrentRoute(window.location.pathname)
     }, []);
 
-    const handleChange = (e: any) => {
-        const searchTerm = e.target.value;
-        if(searchTerm.trim() !== '') {
-            setActif(true)
-            setQuery(searchTerm);
-            // Simulation d'une recherche avec un tableau de données statique
-            const filteredResults = mockData.filter(item =>
-                item.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            setResults(filteredResults);
-        }
-        else  {
-            setActif(false)
-            setQuery('');
-            setResults([]);
-        }
-
-    };
+  
     return (
-        <nav className={'bg-white md:bg-transparent py-5 text-black absolute top-0 px-5 w-full'}>
+        <nav className={'bg-white  py-2 text-black fixed top-0 px-5 w-full'}>
             {/*items 1*/}
             <nav className={'flex justify-between'}>
                 {/*image or bugger icone**/}
@@ -155,34 +130,7 @@ function NavBar() {
                 </div>
 
                 {/*searche bar*/}
-                <div className={'md:block hidden absolute left-[15%] top-3'}>
-                    <div
-                        className={'flex space-x-2 bg-white border-2 border-black h-[50px] w-auto rounded-[20px] px-3'}>
-                        <form>
-                            <input
-                                className={'md:w-[320px] h-9 mt-2 ml-2 bg-white outline-0 border-0 focus:border-0 focus:outline-0 '}
-                                placeholder={'Trouver un Produit'}
-                                type="text"
-                                value={query}
-                                onChange={handleChange}
-
-                            />
-                        </form>
-
-                        <div className={'bg-buttonColor p-3  w-[100px] my-1 rounded-[20px] flex space-x-2'}>
-                            <FaSearch className={'w-[15px] h-[15px] '} color={'white'}/>
-                            <h1 className={'text-[18px] text-white mt-[-5px]'}>search</h1>
-                        </div>
-                    </div>
-
-                    <div className={`${actif ? 'block bg-gray-100 w-[600px] p-5 rounded-[20px] h-auto mt-5' : 'hidden'} `}>
-                        <ul>
-                            {results.map((result, index) => (
-                                <li key={index}>{result}</li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
+                <SearchNav />
 
 
                 {/*icon responsive*/}

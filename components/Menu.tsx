@@ -1,8 +1,8 @@
 "use client"
-import React, {useState} from 'react';
-import type {MenuProps} from 'antd';
-import {Menu} from 'antd';
-import {GiHamburgerMenu} from "react-icons/gi";
+import React, { useState } from 'react';
+import type { MenuProps } from 'antd';
+import { Menu } from 'antd';
+import { GiHamburgerMenu } from "react-icons/gi";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -27,7 +27,7 @@ const items: MenuProps['items'] = [
     {
         label: 'Tous les catégories',
         key: 'SubMenu',
-        icon: <GiHamburgerMenu style={{color: ''}} className={''}/>,
+        icon: <GiHamburgerMenu style={{ color: '' }} className={''} />,
         children: [
             {
                 type: 'group',
@@ -78,10 +78,10 @@ const Menu1: React.FC = () => {
     };
 
     return <Menu onClick={onClick}
-              selectedKeys={[current]}
-              mode="horizontal"
-              items={items}
-        />;
+        selectedKeys={[current]}
+        mode="horizontal"
+        items={items}
+    />;
 };
 
 export default Menu1;

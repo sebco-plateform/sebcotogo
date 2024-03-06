@@ -12,6 +12,7 @@ import MenuResponsive from "@/components/MenuResponsive";
 import Tap from "@/components/Tap";
 import Dialogs from "@/components/Dialog";
 import { Badge } from 'antd';
+import SearchNav from '@/components/SearchNav';
 const navItemWeb1 = [
     {
         name: "Demander un Devis",
@@ -22,25 +23,25 @@ const navItemWeb1 = [
     {
         name: "Se Connecter",
         icon: <FcBusinessman style={{ color: 'white'}} size={24} className={'h-[24px] w-[24px] text-white'}/>,
-        route: "/",
+        route: "/login",
     },
 
     {
         name: "S'inscrire",
         icon: "",
-        route: "/",
+        route: "/registre",
     },
 
     {
         name: "",
         icon:(<Badge count={5}> <IoIosNotifications style={{ color: 'white'}} className={'h-[24px] w-[24px] text-white'}/> </Badge> ) ,
-        route: "",
+        route: "/notifications",
     },
 
     {
         name: "",
         icon:(<Badge count={5}><TiShoppingCart style={{ color: 'white'}} size={24} className={'h-[24px] w-[24px] '}/> </Badge> ) ,
-        route: "/",
+        route: "/cart",
     },
 
     {
@@ -64,20 +65,20 @@ const navItems1 = [
 
     {
         name: "profil",
-        route: '/',
+        route: '/login',
         icon:(<FcBusinessman style={{ color: 'white'}} size={24} className={'h-[24px] w-[24px] text-white'}/>) ,
     },
 
 
     {
-        name: "Notification",
-        route: '/',
+        name: "",
+        route: '/notifications',
         icon:(<Badge count={5}> <IoIosNotifications style={{ color: 'white'}} className={'h-[24px] w-[24px] text-white'}/>  </Badge> ) ,
     },
 
     {
-        name: "Panier",
-        route: '/',
+        name: "",
+        route: '/cart',
         icon:(<Badge count={5}> <TiShoppingCart style={{ color: 'white'}} size={24} className={'h-[24px] w-[24px] '}/></Badge> ) ,
     },
 
@@ -90,19 +91,19 @@ const navItems2 = [
     },
     {
         name: 'Nos services',
-        route: '/',
+        route: '/categories',
     },
     {
         name: 'A propos',
-        route: '/',
+        route: '/about',
     },
     {
         name: 'Notre equipe',
-        route: '/',
+        route: '/about',
     },
     {
         name: 'Historique des achats',
-        route: '/',
+        route: '/history',
     },
 ]
 function NavBar() {
@@ -112,7 +113,7 @@ function NavBar() {
         setCurrentRoute(window.location.pathname)
     }, []);
     return (
-        <nav className={'text-white absolute top-5 px-5 w-full'}>
+        <nav className={'text-white fixed bg-blackOpacity py-2 top-0 px-5 w-full'}>
             {/*items 1*/}
             <div className={'flex justify-between'}>
                 {/*image or bugger icone**/}
@@ -121,6 +122,9 @@ function NavBar() {
                 <div className={'hidden md:flex w-full'}>
                     <Image src={"/icons/logo.svg"} alt={"logo"} width={100} height={100} className={''} quality={100}/>
                 </div>
+
+                 {/*searche bar*/}
+                <SearchNav />
 
                 {/*icon responsive*/}
                 <div className={'md:hidden w-full'}>
@@ -200,7 +204,8 @@ function NavBar() {
                 <div className={'flex space-x-2 w-[1000px]'}>
                     {
                         navItems2.map((items, index) => {
-                            return <div className={''} key={index}>
+                            return <div className={''} 
+                            key={index}>
                                 <Link href={items.route}
 
                                       className={currentRoute == items.route ? 'font-extrabold md:text-[15px] text-[10px] text-white' : '  font-light md:text-[15px] text-[12px] text-white'}

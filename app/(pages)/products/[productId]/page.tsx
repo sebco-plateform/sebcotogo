@@ -162,7 +162,7 @@ const ProductPage = () => {
             </section>
 
             <section className={'mt-10'}>
-                <h1 className={'text-[30px] font-bold'}>Autre recommandation pour vous</h1>
+                <h1 className={'text-[30px] font-bold'}>Autres recommandations pour vous.</h1>
 
                 <div className={'grid grid-cols-1 md:grid-cols-2 gap-2'}>
                     <CardArt1/>

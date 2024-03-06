@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const CardArt1 = () => {
 
-    return <Link href={''}>
+    return <Link href={'/products/1'}>
         <div className={'flex flex-col md:flex-row md:space-x-5 md:p-3 p-1 w-auto md:w-[486px] h-auto bg-white rounded-[15px]'}>
             {/*image*/}
             <div className={"w-auto self-center"}>

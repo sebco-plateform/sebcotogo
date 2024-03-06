@@ -44,7 +44,7 @@ export default function Home() {
   return (
     <main className="">
         {/* cover page*/}
-        <div className={'bg-coverPageMobBg md:bg-coverPageWebBg bg-cover bg-fixed top-0 bg-no-repeat w-full h-[500px]'}>
+        <div className={'bg-coverPageMobBg md:bg-coverPageWebBg bg-cover bg-containt bg-center bg-fixed top-0 bg-no-repeat w-full h-[500px]'}>
             <div className={'text-[20px] w-auto font-medium md:text-[30px] text-white pt-[30%] md:pt-[10%] md:w-[850px] ml-8'}>
                 Bienvenue sur notre site
                 dédié aux matériaux de construction, ou vous trouvérez de variété exceptionnelle de
@@ -75,15 +75,20 @@ export default function Home() {
                         />
                     </form>
 
-                    <div className={'bg-buttonColor p-3  w-[100px] my-1 rounded-[20px] flex space-x-2'}>
+                    <button className={'bg-buttonColor p-3  w-[100px] my-1 rounded-[20px] flex space-x-2'}>
                         <FaSearch className={'w-[15px] h-[15px] '} color={'white'}/>
                         <h1 className={'text-[18px] text-white mt-[-5px]'}>search</h1>
-                    </div>
+                    </button>
                 </div>
                 <div className={`${actif ? 'block bg-white w-[600px] p-5 rounded-[20px] h-auto mt-3 absolute' : 'hidden'} `}>
                     <ul>
                         {results.map((result, index) => (
-                            <li key={index}>{result}</li>
+                            <li key={index}>
+                                <Link href={'/product/1'}>
+                                    {result}
+                                </Link>
+                            
+                            </li>
                         ))}
                     </ul>
                 </div>

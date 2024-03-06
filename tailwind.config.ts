@@ -23,6 +23,7 @@ const config = {
         coverPageMobBg: `url(/images/bgImgMobile.png)`,
       },
       colors: {
+        blackOpacity: 'rgba(0, 0, 0, 0.5)',
         primaryColor: "#FFFFFF90",
         secondColor: "#C76E1B",
         buttonColor: "#EE8729",

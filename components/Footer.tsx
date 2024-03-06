@@ -98,7 +98,7 @@ function Footer() {
                             <Input type={'email'} placeholder={'Email'} name={'from_email'} required className={'bg-white'}/>
                         </div>
 
-                        <div className={'flex flex-col space-y-5'}>
+                        <div className={'mt-[-10px] flex flex-col space-y-5'}>
                              <textarea className={" pl-5 pt-3 rounded-sm h-[90px]"} placeholder={'Votre message'} rows={4} cols={40} />
 
                             <Button type={'submit'} variant={'default'} size={'lg'} className={'bg-buttonColor text-white'}
