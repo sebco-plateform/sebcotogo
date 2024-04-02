@@ -5,9 +5,17 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { Api } from "@/api/Api";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { logIn } from "@/redux/features/auth-slice";
 
 const Login = () => {
-
+    const route = useRouter();
+    const [errorMessage, setErrorMessage] = useState('');
+    const dispatch = useDispatch();
+    
     const formik = useFormik({
         initialValues: {
             phone: "",
@@ -15,17 +23,41 @@ const Login = () => {
         },
         validationSchema: Yup.object({
             phone: Yup.number().required('votre numero est obligatoire'),
-            passwors: Yup.string().required('le mot de passe est obligatoire')
+            passwords: Yup.string().required('le mot de passe est obligatoire')
         }),
 
-        onSubmit: (values) => {
-            console.log(values);
+        onSubmit: async (values) => {
+            const response = await Api.post({phone: Number(values.phone), password: values.passwords}, `user/login`)
+            if(response.ok) {
+                const data: any = await  response.json();
+
+                if(!data.error){
+                   dispatch(logIn(data.id));
+                   values.passwords = "";
+                   values.phone = "";
+                   route.push('/cart');
+                }
+                else {
+                    setErrorMessage('Le numéro ou le mot de passe est incorrecte. Réessayez!!!!');
+                    values.passwords = "";
+                    values.phone = "";
+                }
+                
+            }
+            else {
+                setErrorMessage('Le numéro ou le mot de passe est incorrecte. Réessayez!!!!');
+                values.passwords = "";
+                   values.phone = "";
+            }
         }
     })
     return (
         <div className=" px-3  h-screen flex w-full items-center justify-center">
             <div className="p-5 bg-white rounded-[15px] w-[500px] flex flex-col space-y-10 items-center justify-center ">
                 <h1 className="text-[45px] font-bold text-center "> Connectez vous.</h1>
+                <h1 className="text-[18px] font-bold text-center text-red-600 ">{
+                    errorMessage != '' ? errorMessage : ''
+                }</h1>
                 <form onSubmit={formik.handleSubmit} className=" flex flex-col space-y-5">
 
                     <div className="flex flex-col">

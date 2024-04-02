@@ -4,6 +4,8 @@ import "./globals.css";
 import Footer from "@/components/Footer";
 import DevisBtn from "@/components/DevisBtn";
 import {Toaster} from "@/components/ui/toaster";
+import { ReduxProvider } from "@/redux/provider";
+import Head from "next/head";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"] ,
@@ -31,16 +33,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
+     
 
       <body className={`${josefin.className} bg-gray-100 `}>
-
-      <DevisBtn />
+      <ReduxProvider>
+        <DevisBtn />
 
         {children}
 
       <Footer/>
 
       <Toaster />
+      </ReduxProvider>
+      
       </body>
 
     </html>

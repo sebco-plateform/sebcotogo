@@ -5,6 +5,7 @@ export class CustomerModel {
     firstName: string;
     lastName: string;
     role: string;
+    id?: number;
 
     constructor(
          phone: number,

@@ -47,7 +47,6 @@ const Registre = () => {
             else {
                 
                 const customerModel = new CustomerModel(Number(values.phone), values.passwords, values.email, values.firstName, values.lastName, "customer")
-                console.log(customerModel)
     
                 const response = await Api.post(customerModel, "user/add");
                 if(response.ok) {
