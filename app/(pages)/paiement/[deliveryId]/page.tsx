@@ -22,6 +22,7 @@ const Paiement = ({params}: {params: {deliveryId: string}}) => {
     const [orderId,setOrder] = useState("");
     const [customer, setCustomer] = useState<any>()
 
+
     useEffect(() => {
         setTotal(itemCart.reduce((totals, cartModel ) => totals + cartModel.priceTotal, 0));
         if (isAuth) {
@@ -34,8 +35,8 @@ const Paiement = ({params}: {params: {deliveryId: string}}) => {
                 script.onload = () => {
                     // @ts-ignore
                     window.FedaPay.init({
-                        public_key: 'pk_live_saqK9coFXPq0MtLm0uWzcjLE',
-                        environment: "live",
+                        public_key: 'pk_sandbox_iMo6GhIxyKT7SdFWKD-BgHYR',
+                        environment: "sandbox",
                         transaction: {
                             amount: total,
                             description: 'Acheter mon produit'

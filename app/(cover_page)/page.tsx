@@ -10,6 +10,8 @@ import { Api } from "@/api/Api";
 import { ArticleModel } from "../models/ArticleModel";
 import {useRouter} from "next/navigation";
 import Image from "next/image";
+import {useSelector} from "react-redux";
+import {RootState} from "@/redux/store";
 
 
 interface articleIterf {
@@ -35,6 +37,8 @@ export default function Home() {
     const [data1, setData1] = useState<DataInterface[]>([])
     const [data2, setData2] = useState<DataInterface[]>([])
     const [data3, setData3] = useState<DataInterface[]>([])
+    const isAuth = useSelector((state: RootState) => state.authReducer.value.isAuth)
+
     const route = useRouter();
 
 
@@ -169,12 +173,15 @@ export default function Home() {
 
             {/*button*/}
             <div className={'md:hidden flex ml-[25px]'}>
-                <Button className={'bg-buttonColor text-[20px] mt-3'}
-                        size={'lg'}
-                        onClick={() => {route.push("/registre")}}
-                >
-                    S'inscrire maintenant!
-                </Button>
+                {
+                    !isAuth &&  <Button className={'bg-buttonColor text-[20px] mt-3'}
+                                        size={'lg'}
+                                        onClick={() => {route.push("/registre")}}
+                    >
+                        S'inscrire maintenant!
+                    </Button>
+                }
+
             </div>
 
             {/*search par*/}
@@ -233,15 +240,15 @@ export default function Home() {
                         <TabsTrigger value="cimant">cimant</TabsTrigger>
                         <TabsTrigger value="agérégat">agérégat</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="acier" className={' flex items-center justify-center flex-col space-y-3 md:grid md:grid-cols-4 md:gap-2'}>
+                    <TabsContent value="acier" className={' flex items-center justify-center flex-col space-y-3  md:flex-row md:space-x-5'}>
                         {
                             data1.length == 0 ?
-                                <div className={"flex flex-col  md:relative md:left-[70%] w-full"}>
+                                <div className={"flex flex-col  w-auto"}>
                                     <Image src={"/images/sammy-sailor-looking-through-telescope-off-the-mast.gif"}
                                            alt={"data empty"}
                                            priority
-                                           width={700}
-                                           height={700}
+                                           width={400}
+                                           height={400}
                                            className={"bg-center bg-cover"}
                                     />
 
@@ -255,7 +262,7 @@ export default function Home() {
                             })
                         } 
                     </TabsContent>
-                    <TabsContent value="cimant" className={'flex items-center justify-center flex-col space-y-3 md:grid md:grid-cols-4 md:gap-2'}>
+                    <TabsContent value="cimant" className={'flex items-center justify-center flex-col space-y-3  md:flex-row md:space-x-5'}>
                     {
                         data2.length == 0 ?
                             <div className={"flex flex-col  md:relative md:left-[70%] w-full"}>
@@ -278,7 +285,7 @@ export default function Home() {
                         } 
                         
                     </TabsContent>
-                    <TabsContent value="agérégat" className={'flex items-center justify-center flex-col space-y-3 md:grid md:grid-cols-4 md:gap-2'}>
+                    <TabsContent value="agérégat" className={'flex items-center justify-center flex-col space-y-3 md:flex-row md:space-x-5'}>
                     {
                         data3.length == 0 ?
                             <div className={"flex flex-col  md:relative md:left-[70%] w-full"}>

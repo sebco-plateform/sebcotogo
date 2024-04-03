@@ -59,7 +59,7 @@ export default function Swipers() {
         <>
             <Swiper
                 slidesPerView={2}
-                spaceBetween={-5}
+                spaceBetween={5}
                 centeredSlides={true}
                 autoplay={{
                     delay: 2500,
@@ -70,7 +70,7 @@ export default function Swipers() {
                 }}
                 navigation={true}
                 modules={[Autoplay, Pagination, Navigation]}
-                className="mySwiper"
+                className="mySwiper flex space-x-5"
             >
                 {
                     data.map((articles, index) => {

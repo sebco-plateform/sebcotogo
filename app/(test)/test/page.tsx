@@ -1,39 +1,45 @@
 "use client"
 import { useEffect, useRef } from 'react';
-
+import { useKKiaPay } from 'kkiapay-react';
 const Test = () => {
-    const embedRef = useRef(null);
 
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = 'https://cdn.fedapay.com/checkout.js?v=1.1.7';
-        // @ts-nocheck
-        script.onload = () => {
-            // @ts-ignore
-          window.FedaPay.init({
-            public_key: 'pk_sandbox_iMo6GhIxyKT7SdFWKD-BgHYR',
-            environment: "sandbox",
-            data_widget_image: "",
-            transaction: {
-              amount: 1000,
-              description: 'Acheter mon produit'
-            },
-            customer: {
-              email: 'johndoe@gmail.com',
-              lastname: 'Doe',
-            },
-            container: embedRef.current
-          });
-        };
-        document.body.appendChild(script);
-    
-        return () => {
-          document.body.removeChild(script);
-        };
-      }, []);
+        const { openKkiapayWidget, addKkiapayListener,     removeKkiapayListener
+        } = useKKiaPay();
+
+        function successHandler(response: any) {
+            console.log(response);
+        }
+
+        function failureHandler(error: any) {
+            console.log(error);
+        }
+
+        useEffect(() => {
+            addKkiapayListener('success',successHandler)
+            addKkiapayListener('failed', failureHandler)
+
+            return () => {
+                removeKkiapayListener('success')//,successHandler
+                removeKkiapayListener('failed')//, failureHandler
+            };
+        }, [addKkiapayListener,removeKkiapayListener]);
+        function open() {
+            openKkiapayWidget({
+                amount: 4000,
+                fullname: "",
+                api_key: "3cb8ff60f18711eeae665f935f4f8891",
+                sandbox: true,
+                email: "randomgail@gmail.com",
+                phone: "97000000",
+            });
+        }
+
+
     return (
         <div className={' mt-[35%] md:mt-[10%] px-3 md:px-20 flex flex-col items-center justify-center'}>
-            <div ref={embedRef} style={{ width: '500px', height: '420px' }} />
+            <button type={"button"} onClick={() => {
+                open();
+            } }>click me</button>
         </div>
     );
 }

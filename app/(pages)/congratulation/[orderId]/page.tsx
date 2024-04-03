@@ -35,19 +35,24 @@ const Congratulation = ({params}: {params: {orderId: string}}) => {
             comment: "",
         },
         validationSchema: Yup.object({
-            comment: Yup.string().required("Merci  de laisser un commentaire")
+            comment: Yup.string().optional()
         }),
         onSubmit: async (values) => {
 
             if(isAuth) {
-                const commentModel = new CommentModel(values.comment, String(Resources.date), Number((uid)));
-                const resp = await Api.post(commentModel, "comment/add")
-                if(resp.ok) {
-                    toast({
-                        title: "Merci de télécharger votre facture sur la page suivante"
-                    })
+                if(values.comment !="") {
+                    const commentModel = new CommentModel(values.comment, String(Resources.date), Number((uid)));
+                    const resp = await Api.post(commentModel, "comment/add")
+                    if(resp.ok) {
+                        toast({
+                            title: "Merci de télécharger votre facture sur la page suivante"
+                        })
+                        router.push(`/invoice/${params.orderId}`)
+                    }
+                }else {
                     router.push(`/invoice/${params.orderId}`)
                 }
+
             }
         }
     })
@@ -93,7 +98,7 @@ const Congratulation = ({params}: {params: {orderId: string}}) => {
                                 className={"self-center md:self-end w-auto bg-buttonColor"}
 
                         >
-                            Envoyer
+                            Téléchargé la facture
                             <BiSend/>
                         </Button>
                     </form>

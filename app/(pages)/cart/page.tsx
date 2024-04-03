@@ -26,6 +26,7 @@ interface DataType {
 
 function  removeInArray(array: any[], element: any) {
     const newArray = array.filter(item => item !== element);
+
     if(array.length != newArray.length) {
         return true;
     }
@@ -178,7 +179,15 @@ const Cart = () => {
                         className=" md:py-2 bg-buttonColor font-bold md:text-[20px]"
                         onClick={() => {
                               if(isAuth) {
-                                    router.push("/order");
+                                  if(total < 5000) {
+                                      toast({
+                                          title: "La somme total doit être supérieur ou égale a 5000 TTC",
+                                          variant: "destructive"
+                                      })
+                                  } else {
+                                      router.push("/order");
+                                  }
+
                                 }
                                 else {
                                     router.push("/login");

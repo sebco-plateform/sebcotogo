@@ -116,9 +116,9 @@ export default  function Categories()  {
                             <Image src={"/images/sammy-sailor-looking-through-telescope-off-the-mast.gif"}
                                    alt={"data empty"}
                                    priority
-                                   width={500}
-                                   height={500}
-                                   className={"bg-center bg-cover w-full"}
+                                   width={400}
+                                   height={400}
+                                   className={"bg-center bg-cover self-center"}
                             />
 
                         <h1 className={"text-center font-regular text-blue-600 text-[25px]"}>Catégories non disponible</h1>

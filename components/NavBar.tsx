@@ -15,6 +15,7 @@ import { Badge } from 'antd';
 import SearchNav from '@/components/SearchNav';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import ProfilBtn from "@/components/ProfilBtn";
 
 
 interface NavInterface  {
@@ -79,12 +80,6 @@ function NavBar({ style, text_color } : NavInterface) {
     
         {
             name: "",
-            icon: <FcBusinessman  size={24} className={'h-[24px] w-[24px] text-white'}/>,
-            route: "/profil",
-        },
-    
-        {
-            name: "",
             icon:(<Badge count={0}> <IoIosNotifications  className={'h-[24px] w-[24px] '}/> </Badge> ) ,
             route: "/notifications",
         },
@@ -139,12 +134,6 @@ function NavBar({ style, text_color } : NavInterface) {
             route: '/',
             icon: <Dialogs color={'white'}  />,
                 /*<FaSearch style={{ color: 'white'}} size={24} className={'h-[24px] w-[24px] text-white'}/>,*/
-        },
-    
-        {
-            name: "profil",
-            route: '/login',
-            icon:(<FcBusinessman style={{ color: 'white'}} size={24} className={`h-[24px] w-[24px] ${text_color} `}/>) ,
         },
     
     
@@ -232,7 +221,7 @@ function NavBar({ style, text_color } : NavInterface) {
                                     </div>
                                 </Link>
                             })
-                        : navItemWeb1.map((items, index) => {
+                        :  navItemWeb1.map((items, index) => {
                                 return <Link href={items.route}
                                              key={index}
                                              className={`${text_color} h-auto font-light md:text-[15px]`}
@@ -246,9 +235,15 @@ function NavBar({ style, text_color } : NavInterface) {
                                     </div>
                                 </Link>
                             })
-                        
-                        
                     }
+
+                    {
+                        isAuth && <div className={"mt-[-10px]"}>
+                            <ProfilBtn/>
+                        </div>
+                    }
+
+
                 </div>
 
                 {/*Nav items2 responsive*/}
@@ -273,6 +268,12 @@ function NavBar({ style, text_color } : NavInterface) {
                             </Link>
                         })
                     }
+                    {
+                        isAuth && <div className={""}>
+                            <ProfilBtn/>
+                        </div>
+                    }
+
                 </div>
             </div>
 

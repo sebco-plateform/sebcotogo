@@ -5,20 +5,98 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { RootState } from "@/redux/store";
 import { DeliveryModel } from "@/app/models/DeliveryModel";
 import { Api } from "@/api/Api";
 import { useToast } from "@/components/ui/use-toast";
 import {useRouter} from "next/navigation";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import { useKKiaPay } from 'kkiapay-react';
+import {CustomerModel} from "@/app/models/CustomerModel";
+import CartModel from "@/app/models/CartModel";
+import {OrderModel} from "@/app/models/OrderModel";
+import {OrderArticleModel} from "@/app/models/OrderArticle";
+import {removeProduct} from "@/redux/features/cart-slice";
 
 const Order = () => {
 
     const isAuth = useSelector((state: RootState) => state.authReducer.value.isAuth)
     const uid = useSelector((state: RootState) => state.authReducer.value.uid)
     const {toast} = useToast();
+    const itemCart: CartModel[] = useSelector((state: RootState) => state.cartSlice);
+    const [total ,setTotal] = useState(0)
     const route = useRouter()
+    const { openKkiapayWidget, addKkiapayListener,     removeKkiapayListener
+    } = useKKiaPay();
+    const [customer, setCustomer] = useState<CustomerModel>()
+    const dispatch = useDispatch();
+    const [orderId,setOrder] = useState("");
+    const [deliveryId,setDelivery] = useState("");
+
+    const [response, setResponse] = useState(false);
+
+
+
+    async  function  successHandler(response: any) {
+        //console.log(response);
+        const orderModel = new OrderModel(total, "pass", Number(uid), Number(deliveryId));
+        const resp1 = await  Api.post(orderModel, 'order/add')
+        if(resp1.ok) {
+            resp1.json().then((datas: any) => {
+                setOrder(datas.id);
+                itemCart.forEach((ele) => {
+                    const orderArticle = new OrderArticleModel(ele.quantity, ele.price, Number(ele.id), datas.id);
+                    Api.post(orderArticle, 'order-article/add').then((res) => {
+                        setResponse(res.ok);
+                    })
+                })
+            });
+
+            if(response) {
+                itemCart.forEach((ele) => {
+                    dispatch(removeProduct(ele.id))
+                })
+                route.push(`/congratulation/${orderId}`)
+            }
+        }
+    }
+
+    function failureHandler(error: any) {
+        console.log(error);
+        toast({
+            title: "Une erreur est survenue lors du paiement!",
+            variant: "destructive"
+        })
+    }
+
+    useEffect(() => {
+        setTotal(itemCart.reduce((totals, cartModel ) => totals + cartModel.priceTotal, 0));
+
+        Api.getAll(`user/single/${uid}`).then((custom: any) => {
+            setCustomer(custom)
+        });
+
+        addKkiapayListener('success',successHandler)
+        addKkiapayListener('failed', failureHandler)
+
+        return () => {
+            removeKkiapayListener('success')//,successHandler
+            removeKkiapayListener('failed')//, failureHandler
+        };
+    }, [addKkiapayListener,removeKkiapayListener]);
+
+    function open() {
+        openKkiapayWidget({
+            amount: total,
+            fullname: `${customer?.lastName} ${customer?.firstName}`,
+            api_key: "3cb8ff60f18711eeae665f935f4f8891",
+            sandbox: true,
+            email: `${customer?.email}`,
+            phone: "97000000",
+        });
+    }
+
     const formik = useFormik({
         initialValues: {
             city: "",
@@ -48,8 +126,10 @@ const Order = () => {
 
                          toast({
                              title: "informations enregistrées avec succès!"
-                         })
-                         route.push(`/paiement/${del.id}`)
+                         });
+                         setDelivery(del.id)
+                         open();
+                         //route.push(`/paiement/${del.id}`)
                      })
 
                  }else {
