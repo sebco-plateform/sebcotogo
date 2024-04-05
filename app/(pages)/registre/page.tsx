@@ -47,7 +47,6 @@ const Registre = () => {
             else {
                 
                 const customerModel = new CustomerModel(Number(values.phone), values.passwords, values.email, values.firstName, values.lastName, "customer")
-                console.log(customerModel)
     
                 const response = await Api.post(customerModel, "user/add");
                 if(response.ok) {
@@ -72,11 +71,11 @@ const Registre = () => {
     })
 
     return (
-        <div className=" px-3 mt-10 h-screen flex w-full items-center justify-center">
+        <div className=" px-3 mt-5 md:mt-10 h-screen flex w-full items-center justify-center">
             <div className="py-5 px-2 bg-white rounded-[15px] w-[500px] flex flex-col space-y-10 items-center justify-center ">
                 <h1 className="text-[45px] font-bold text-center "> Créez un compte.</h1>
                 <h1 className={"text-[16px] text-center text-red-600"}>{passConf != "" ? passConf : "" } </h1>
-                <form onSubmit={formik.handleSubmit} className=" flex flex-col space-y-5 w-[400px] ">
+                <form onSubmit={formik.handleSubmit} className=" flex flex-col space-y-5 md:w-[400px] ">
                  {/** first form */}
                     <div className="flex space-x-3 content-between justify-between">                   
                         <div className="flex flex-col">
@@ -140,7 +139,7 @@ const Registre = () => {
 
 
                      {/** first form */}
-                     <div className="flex space-x-3 content-between justify-between">                   
+                     <div className="flex flex-col space-y-5 md:space-y-0 md:space-x-3 md:flex-row md:content-between md:justify-between">
                         <div className="flex flex-col">
                             <label className={formik.touched.passwords && formik.errors.passwords ? "text-[16px] text-red-600 " : "text-[16px] text-gray-600 "}>
                                  {formik.touched.passwords && formik.errors.passwords ? formik.errors.passwords : "Mot de passe"} 

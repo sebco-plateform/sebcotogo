@@ -1,6 +1,6 @@
 
+import NavBar from "@/components/NavBar";
 import "../globals.css";
-import NavBar from "@/app/(pages)/components/NavBar";
 
 
 export default function RootLayout({
@@ -12,7 +12,7 @@ export default function RootLayout({
 
 
         <div className={``}>
-        <NavBar />
+        <NavBar style= "bg-white  py-2 text-black fixed top-0 px-5 w-full" text_color="text-black" />
         {children}
 
         </div>

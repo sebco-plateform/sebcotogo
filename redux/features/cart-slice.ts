@@ -1,9 +1,14 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-interface product{
+interface cartModel{
     id: number,
+    image: string,
+    name: string,
+    price: number,
     quantity: number,
+    priceTotal: number,
 }
+
 
 const cartSlice = createSlice({
     name: 'cart',

@@ -1,36 +1,155 @@
 "use client"
-import Image from "next/image";
-import {Input} from "@/components/ui/input";
 import { FaSearch } from "react-icons/fa";
-import { IconContext } from "react-icons";
 import {Button} from "@/components/ui/button";
-import {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Link from "next/link";
-import CardArt1 from "@/components/CardArt1";
 import Swipers from "@/components/Swiper";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Card2 from "@/components/Card2";
+import { Api } from "@/api/Api";
+import { ArticleModel } from "../models/ArticleModel";
+import {useRouter} from "next/navigation";
+import Image from "next/image";
+import {useSelector} from "react-redux";
+import {RootState} from "@/redux/store";
 
-//https://www.figma.com/file/OxGg10ukR3y8hpgB5OxCAe/sebco-plateforme?type=design&node-id=6-24&mode=design&t=pwROPYMC1jn54VaO-0
-const mockData = [
-    "Résultat 1",
-    "Résultat 2",
-    "Autre résultat",
-    "Encore un résultat",
-    "Dernier résultat"
-];
+
+interface articleIterf {
+
+    article_articleName : string;
+    article_id: string;
+    article_price: string;
+    article_description: string;
+}
+interface DataInterface {
+    name: string;
+    price: string;
+    description: string;
+    articleId: string;
+    imageUrl: string;
+    imageId: string;
+}
 export default function Home() {
     const [query, setQuery] = useState('');
-    const [results, setResults] = useState<string[]>([]);
+    const [results, setResults] = useState<ArticleModel[]>([]);
     const [actif, setActif] = useState(false);
+    const [articlesData, setArticlesData] = useState<ArticleModel[]>([])
+    const [data1, setData1] = useState<DataInterface[]>([])
+    const [data2, setData2] = useState<DataInterface[]>([])
+    const [data3, setData3] = useState<DataInterface[]>([])
+    const isAuth = useSelector((state: RootState) => state.authReducer.value.isAuth)
+
+    const route = useRouter();
+
+
+
+    useEffect(() => {
+
+        Api.getAll('article/all').then((data) => {
+            
+            setArticlesData(data)
+        })
+
+        const fetchData1 = async () => {
+            try {
+                const articles: any[] = await Api.getAll(`article/articleByCategoryName/fer`);
+                const dataArray: DataInterface[] = [];
+
+                for (const articleElement of articles) {
+                    const imgData: any[] = await Api.getAll(`image/articleImage/${articleElement.article_id}`);
+                    const relevantImages = imgData.filter(img => img.article.id == articleElement.article_id);
+
+                    relevantImages.forEach(img => {
+                        dataArray.push({
+                            name: articleElement.article_articleName,
+                            price: String(articleElement.article_price),
+                            description: articleElement.article_description,
+                            articleId: String(articleElement.article_id),
+                            imageUrl: img.imageUrl,
+                            imageId: String(img.id)
+                        });
+                    });
+                }
+
+                setData1(dataArray);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData1();
+
+        const fetchData2 = async () => {
+            try {
+                const articles: any[] = await Api.getAll(`article/articleByCategoryName/ciment`);
+                const dataArray: DataInterface[] = [];
+
+                for (const articleElement of articles) {
+                    const imgData: any[] = await Api.getAll(`image/articleImage/${articleElement.article_id}`);
+                    const relevantImages = imgData.filter(img => img.article.id == articleElement.article_id);
+
+                    relevantImages.forEach(img => {
+                        dataArray.push({
+                            name: articleElement.article_articleName,
+                            price: String(articleElement.article_price),
+                            description: articleElement.article_description,
+                            articleId: String(articleElement.article_id),
+                            imageUrl: img.imageUrl,
+                            imageId: String(img.id)
+                        });
+                    });
+                }
+
+                setData2(dataArray);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData2();
+
+        const fetchData3 = async () => {
+            try {
+                const articles: any[] = await Api.getAll(`article/articleByCategoryName/agregat`);
+                const dataArray: DataInterface[] = [];
+
+                for (const articleElement of articles) {
+                    const imgData: any[] = await Api.getAll(`image/articleImage/${articleElement.article_id}`);
+                    const relevantImages = imgData.filter(img => img.article.id == articleElement.article_id);
+
+                    relevantImages.forEach(img => {
+                        dataArray.push({
+                            name: articleElement.article_articleName,
+                            price: String(articleElement.article_price),
+                            description: articleElement.article_description,
+                            articleId: String(articleElement.article_id),
+                            imageUrl: img.imageUrl,
+                            imageId: String(img.id)
+                        });
+                    });
+                }
+
+                setData3(dataArray);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData3();
+
+
+
+    }, [])
+
+    /**fonction of search */
     const handleChange = (e: any) => {
         const searchTerm = e.target.value;
         if(searchTerm.trim() !== '') {
             setActif(true)
             setQuery(searchTerm);
             // Simulation d'une recherche avec un tableau de données statique
-            const filteredResults = mockData.filter(item =>
-                item.toLowerCase().includes(searchTerm.toLowerCase())
+            const filteredResults = articlesData.filter(item =>
+                item.articleName.toLowerCase().includes(searchTerm.toLowerCase())
             );
             setResults(filteredResults);
         }
@@ -54,11 +173,15 @@ export default function Home() {
 
             {/*button*/}
             <div className={'md:hidden flex ml-[25px]'}>
-                <Button className={'bg-buttonColor text-[20px] mt-3'}
-                        size={'lg'}
-                >
-                    S'inscrire maintenant!
-                </Button>
+                {
+                    !isAuth &&  <Button className={'bg-buttonColor text-[20px] mt-3'}
+                                        size={'lg'}
+                                        onClick={() => {route.push("/registre")}}
+                    >
+                        S'inscrire maintenant!
+                    </Button>
+                }
+
             </div>
 
             {/*search par*/}
@@ -85,7 +208,7 @@ export default function Home() {
                         {results.map((result, index) => (
                             <li key={index}>
                                 <Link href={'/product/1'}>
-                                    {result}
+                                    {result.articleName}
                                 </Link>
                             
                             </li>
@@ -96,10 +219,6 @@ export default function Home() {
             </div>
         </div>
 
-
-
-
-
         <div className={'mt-10 md:px-20 pl-x'}>
 
             <h1 className={'text-[30px] font-medium text-black'}>
@@ -108,9 +227,6 @@ export default function Home() {
 
             {/*articles*/}
             <Swipers />
-
-
-
 
 
             {/*categori serction*/}
@@ -124,20 +240,72 @@ export default function Home() {
                         <TabsTrigger value="cimant">cimant</TabsTrigger>
                         <TabsTrigger value="agérégat">agérégat</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="acier" className={' flex items-center justify-center flex-col space-y-3 md:grid md:grid-cols-4 md:gap-2'}>
-                        <Card2 />
-                        <Card2 />
-                        <Card2 />
-                        <Card2 />
+                    <TabsContent value="acier" className={' flex items-center justify-center flex-col space-y-3  md:flex-row md:space-x-5'}>
+                        {
+                            data1.length == 0 ?
+                                <div className={"flex flex-col  w-auto"}>
+                                    <Image src={"/images/sammy-sailor-looking-through-telescope-off-the-mast.gif"}
+                                           alt={"data empty"}
+                                           priority
+                                           width={400}
+                                           height={400}
+                                           className={"bg-center bg-cover"}
+                                    />
+
+                                    <h1 className={"text-center font-regular text-blue-600 text-[25px]"}>Pas d'article pour cette catégorie</h1>
+                                </div> :
+                            data1.map((articles, index) => {
+
+                                return <div key={index}>
+                                    <Card2 articleName={articles.name} price={Number(articles.price)} id={Number(articles.articleId)} image={articles.imageUrl} />
+                                </div>
+                            })
+                        } 
                     </TabsContent>
-                    <TabsContent value="cimant" className={'flex items-center justify-center flex-col space-y-3 md:grid md:grid-cols-4 md:gap-2'}>
-                        <Card2 />
-                        <Card2 />
-                        <Card2 />
+                    <TabsContent value="cimant" className={'flex items-center justify-center flex-col space-y-3  md:flex-row md:space-x-5'}>
+                    {
+                        data2.length == 0 ?
+                            <div className={"flex flex-col  md:relative md:left-[70%] w-full"}>
+                                <Image src={"/images/sammy-sailor-looking-through-telescope-off-the-mast.gif"}
+                                       alt={"data empty"}
+                                       priority
+                                       width={700}
+                                       height={700}
+                                       className={"bg-center bg-cover"}
+                                />
+
+                                <h1 className={"text-center font-regular text-blue-600 text-[25px]"}>Pas d'article pour cette catégorie</h1>
+                            </div> :
+                            data2.map((articles, index) => {
+
+                                return <div key={index}>
+                                    <Card2 articleName={articles.name} price={Number(articles.price)} id={Number(articles.articleId)} image={articles.imageUrl} />
+                                </div>
+                            })
+                        } 
+                        
                     </TabsContent>
-                    <TabsContent value="agérégat" className={'flex items-center justify-center flex-col space-y-3 md:grid md:grid-cols-4 md:gap-2'}>
-                        <Card2 />
-                        <Card2 />
+                    <TabsContent value="agérégat" className={'flex items-center justify-center flex-col space-y-3 md:flex-row md:space-x-5'}>
+                    {
+                        data3.length == 0 ?
+                            <div className={"flex flex-col  md:relative md:left-[70%] w-full"}>
+                                <Image src={"/images/sammy-sailor-looking-through-telescope-off-the-mast.gif"}
+                                       alt={"data empty"}
+                                       priority
+                                       width={700}
+                                       height={700}
+                                       className={"bg-center bg-cover"}
+                                />
+
+                                <h1 className={"text-center font-regular text-blue-600 text-[25px]"}>Pas d'article pour cette catégorie</h1>
+                            </div> :
+                            data3.map((articles, index) => {
+                                return <div key={index}>
+                                    <Card2 articleName={articles.name} price={Number(articles.price)} id={Number(articles.articleId)} image={articles.imageUrl} />
+                                </div>
+                            })
+                        } 
+                       
                     </TabsContent>
                 </Tabs>
 

@@ -7,6 +7,9 @@ const nextConfig = {
         API_URL: 'https://sebco-api-update.vercel.app/', //'http://localhost:3001/' /*  */,
         GOOGLEMAP_API_KEY:'AIzaSyCyQ0LQ6XqiaXPRK2Wi_zssbLk2gSaiQfY',
     },
+    images: {
+        domains: ['res.cloudinary.com'],
+    },
 };
 
 export default nextConfig;

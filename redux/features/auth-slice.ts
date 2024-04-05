@@ -1,4 +1,6 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 type InitialState = {
     value: AuthState
@@ -14,6 +16,11 @@ const initialState = {
         uid: "",
     } as AuthState
 } as  InitialState
+
+const persistConfig = {
+    key: 'root',
+    storage,
+};
 
 export const auth = createSlice({
     name: "auth",
@@ -35,5 +42,9 @@ export const auth = createSlice({
 })
 
 
+// Wrapping the reducer with persistReducer
+const persistedReducer = persistReducer(persistConfig, auth.reducer);
+
 export const { logIn, logOut } = auth.actions
-export default auth.reducer;
+export default persistedReducer;
+

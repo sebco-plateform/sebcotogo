@@ -1,21 +1,26 @@
 'use client'
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
-const mockData = [
-    "Résultat 1",
-    "Résultat 2",
-    "Autre résultat",
-    "Encore un résultat",
-    "Dernier résultat"
-];
+import { Api } from '@/api/Api';
+import { ArticleModel } from '@/app/models/ArticleModel';
+
 const SearchNav = () => {
 
     const [query, setQuery] = useState('');
-    const [results, setResults] = useState<string[]>([]);
+    const [results, setResults] = useState<ArticleModel[]>([]);
     const [actif, setActif] = useState(false);
+
+    const [articlesData, setArticlesData] = useState<ArticleModel[]>([])
+
+    useEffect(()=> {
+        Api.getAll('article/all').then((data) => {
+            
+            setArticlesData(data)
+        })
+    }, [])
 
     const handleChange = (e: any) => {
         const searchTerm = e.target.value;
@@ -23,8 +28,8 @@ const SearchNav = () => {
             setActif(true)
             setQuery(searchTerm);
             // Simulation d'une recherche avec un tableau de données statique
-            const filteredResults = mockData.filter(item =>
-                item.toLowerCase().includes(searchTerm.toLowerCase())
+            const filteredResults = articlesData.filter(item =>
+                item.articleName.toLowerCase().includes(searchTerm.toLowerCase())
             );
             setResults(filteredResults);
         }
@@ -58,12 +63,12 @@ const SearchNav = () => {
             </button>
         </div>
 
-        <div className={`${actif ? 'block text-black bg-gray-100 w-[600px] p-5 rounded-[20px] h-auto mt-5' : 'hidden'} `}>
+        <div className={`${actif ? 'block text-black bg-white w-[600px] p-5 rounded-[20px] h-auto mt-5' : 'hidden'} `}>
             <ul>
                 {results.map((result, index) => (
                     <li key={index}>
-                        <Link href={'/products/1'}>
-                            {result}
+                        <Link className="hover:text-blue-600 hover:pointer font-bold text-lg" href={`/products/${result.id}`}>
+                            {result.articleName}
                         </Link>
                         
                     </li>

@@ -1,34 +1,43 @@
 'use client'
 import Link from "next/link";
 
+interface CardInterface {
+    name: string;
+    price: string;
+    description: string;
+    image: string;
+    id:number;
+}
 
-const CardArt1 = () => {
+const CardArt1 = ({name,
+    price,
+   description,
+   image,
+   id,
+}: CardInterface) => {
 
-    return <Link href={'/products/1'}>
-        <div className={'flex flex-col md:flex-row md:space-x-5 md:p-3 p-1 w-auto md:w-[486px] h-auto bg-white rounded-[15px]'}>
+    return <Link href={`/products/${id}`}>
+        <div className={'flex flex-col md:flex-row md:space-x-5 md:p-3 p-1 w-full md:w-[486px] h-auto bg-white rounded-[15px]'}>
             {/*image*/}
-            <div className={"w-auto self-center"}>
+            <div className={"w-full items-center flex justify-center"}>
                 <img
-                    src={'/images/cimco 2.svg'}
+                    src={image}
                     alt={'image'}
-                    className={'w-[200px] h-[200px] self-center'}
+                    className={'w-[300px] h-[200px] bg-center bg-cover bg-content self-center'}
                 />
             </div>
 
-            <div className={'flex flex-col space-y-5 mt-3'}>
+            <div className={'w-full flex flex-col space-y-5 mt-3'}>
                 {/*title*/}
-                <h1 className={'font-bold text-[20px] text-center md:text-start'}>CIMCCO</h1>
+                <h1 className={'font-bold text-[20px] text-center md:text-start'}>{name}</h1>
 
                 {/*description*/}
                 <p className={'md:flex hidden font-light text-[15px]'}>
-                    description dolor sit amet consectetur.
-                    Et pretium pharetra cras non ridiculus gravida. Sit
-                    nisl elit dignissim eu ante diam.
-                    Tincidunt arcu rhoncus nisl aenean cras a.
+                    {description}
                 </p>
 
-                <div className={' text-center md:text-start font-bold text-[20px] mt-5'}>
-                    25000 <span className={'font-light text-[15px]'}>TTC</span>
+                <div className={' text-center text-blue-600  md:text-start font-bold text-[20px] mt-5'}>
+                    {price} <span className={'font-light text-[15px]'}>TTC</span>
                 </div>
             </div>
         </div>
