@@ -40,7 +40,7 @@ const Order = () => {
 
     async  function  successHandler(response: any) {
         //console.log(response);
-        const orderModel = new OrderModel(total, "pass", Number(uid), Number(deliveryId));
+        const orderModel = new OrderModel(total, "PASS", Number(uid), Number(deliveryId));
         const resp1 = await  Api.post(orderModel, 'order/add')
         if(resp1.ok) {
             resp1.json().then((datas: any) => {
@@ -57,6 +57,9 @@ const Order = () => {
                 itemCart.forEach((ele) => {
                     dispatch(removeProduct(ele.id))
                 })
+                toast({
+                    title: "informations enregistrées avec succès!"
+                });
                 route.push(`/congratulation/${orderId}`)
             }
         }
@@ -124,9 +127,6 @@ const Order = () => {
                  if(resp.ok) {
                      resp.json().then((del: any) => {
 
-                         toast({
-                             title: "informations enregistrées avec succès!"
-                         });
                          setDelivery(del.id)
                          open();
                          //route.push(`/paiement/${del.id}`)
