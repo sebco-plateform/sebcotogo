@@ -1,5 +1,5 @@
 export class Api {
-    static url ="http://localhost:3001/"; //"https://sebco-api.vercel.app/" // // process.env.API_URL!;
+    static url = String(process.env.API_URL);   //"http://localhost:3001/"; //"https://sebco-api.vercel.app/" // // process.env.API_URL!;
 
     static async  post(data: any, endPoint: string) {
         const response = await fetch(`${Api.url}${endPoint}`, {
