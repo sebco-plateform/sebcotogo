@@ -1,6 +1,7 @@
 'use client'
 import Link from "next/link";
-
+import {Button} from "@/components/ui/button";
+import {useRouter} from "next/navigation";
 interface CardInterface {
     name: string;
     price: string;
@@ -15,15 +16,15 @@ const CardArt1 = ({name,
    image,
    id,
 }: CardInterface) => {
+    const router = useRouter();
 
-    return <Link href={`/products/${id}`}>
-        <div className={'flex flex-col md:flex-row md:space-x-5 md:p-3 p-1 w-full md:w-[486px] h-auto bg-white rounded-[15px]'}>
+    return <div className={'flex flex-col md:flex-row md:space-x-5 md:p-3 p-1 w-[300px] md:w-[486px] h-auto bg-white rounded-[15px]'}>
             {/*image*/}
             <div className={"w-full items-center flex justify-center"}>
                 <img
                     src={image}
                     alt={'image'}
-                    className={'w-[300px] h-[200px] bg-center bg-cover bg-content self-center'}
+                    className={'w-[250px] h-[200px] bg-center bg-cover bg-content self-center'}
                 />
             </div>
 
@@ -32,16 +33,20 @@ const CardArt1 = ({name,
                 <h1 className={'font-bold text-[20px] text-center md:text-start'}>{name}</h1>
 
                 {/*description*/}
-                <p className={'md:flex hidden font-light text-[15px]'}>
-                    {description}
-                </p>
-
-                <div className={' text-center text-blue-600  md:text-start font-bold text-[20px] mt-5'}>
+                <div className={' text-center text-orange-600  md:text-start font-bold text-[20px] mt-5'}>
                     {price} <span className={'font-light text-[15px]'}>TTC</span>
                 </div>
+
+                <Button
+                    onClick={() => {
+                        router.push(`/products/${id}`)
+                    }}
+                    className={"bg-sky-500 mr-3 mb-2 md:mb-0"}>
+                    Voire les détails.
+                </Button>
             </div>
         </div>
-    </Link>
+
 }
 
 export default CardArt1;

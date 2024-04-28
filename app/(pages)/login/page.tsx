@@ -1,6 +1,5 @@
 "use client"
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import * as Yup from "yup";
@@ -10,11 +9,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { logIn } from "@/redux/features/auth-slice";
+import {Button} from "antd";
 
 const Login = () => {
     const route = useRouter();
     const [errorMessage, setErrorMessage] = useState('');
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false)
     
     const formik = useFormik({
         initialValues: {
@@ -27,6 +28,7 @@ const Login = () => {
         }),
 
         onSubmit: async (values) => {
+            setLoading(true)
             const response = await Api.post({phone: Number(values.phone), password: values.passwords}, `user/login`)
             if(response.ok) {
                 const data: any = await  response.json();
@@ -41,6 +43,7 @@ const Login = () => {
                     setErrorMessage('Le numéro ou le mot de passe est incorrecte. Réessayez!!!!');
                     values.passwords = "";
                     values.phone = "";
+                    setLoading(false)
                 }
                 
             }
@@ -48,8 +51,12 @@ const Login = () => {
                 setErrorMessage('Le numéro ou le mot de passe est incorrecte. Réessayez!!!!');
                 values.passwords = "";
                    values.phone = "";
+                setLoading(false)
             }
+
+            setLoading(false)
         }
+
     })
     return (
         <div className=" px-3  h-screen flex w-full items-center justify-center">
@@ -92,9 +99,9 @@ const Login = () => {
                     </div>
 
                     <Button
-                        size={"lg"}
-                        variant={"default"}
-                        type="submit"
+                        size={"large"}
+                        loading={loading}
+                        htmlType="submit"
                         className="p-2 w-auto bg-buttonColor"
                     >
                         Connexion
@@ -104,7 +111,7 @@ const Login = () => {
                 {/**inscription text */}
                 <div className="flex flex-col space-y-3">
                     <div className="text-center">Vous n'avez pas un compte? <Link href={"/registre"} className="text-blue-600"> Inscriver-vous!</Link> </div> 
-                    <Link className="text-blue-600 text-center" href={"/forget-password"}>Mot de passe oublié</Link>
+                    <Link className="text-blue-600 text-center" href={"/password_recovery"}>Mot de passe oublié</Link>
                 </div>
             </div>
         </div>

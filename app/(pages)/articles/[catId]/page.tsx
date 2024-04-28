@@ -106,7 +106,7 @@ export default  function Articles({params}: {params: {catId: string}})  {
                 </div>
 
                 {/*Articles*/}
-                <div className={'grid grid-cols-2 md:grid-cols-3 gap-2'}>
+                <div className={'grid grid-cols-1 md:grid-cols-3 gap-2'}>
                     { isLoading ?
                         [1,2,3,1,1,1,1,1,1].map((el, index) => {
                             return <div className={""} key={index}>
@@ -128,7 +128,7 @@ export default  function Articles({params}: {params: {catId: string}})  {
                             </div> :
                             data.map((articles, index) => {
 
-                                    return <div key={index}>
+                                    return <div key={index} className={"w-full flex items-center justify-center"}>
                                         <Card2 articleName={articles.name} price={Number(articles.price)}
                                                id={Number(articles.articleId)} image={articles.imageUrl}/>
                                     </div>

@@ -1,7 +1,10 @@
 "use client"
 import {Dialog, Transition} from '@headlessui/react'
-import React, {Fragment, useState} from 'react'
+import React, {Fragment, useEffect, useState} from 'react'
 import {FaSearch} from "react-icons/fa";
+import {Api} from "@/api/Api";
+import {ArticleModel} from "@/app/models/ArticleModel";
+import Link from "next/link";
 
 interface propsInterface {
     title: string,
@@ -11,19 +14,20 @@ interface propsInterface {
 
 }
 
-const mockData = [
-    "Résultat 1",
-    "Résultat 2",
-    "Autre résultat",
-    "Encore un résultat",
-    "Dernier résultat"
-];
+
 export default function Dialogs({color}: { color: string }) {
     let [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState('');
-    const [results, setResults] = useState<string[]>([]);
+    const [results, setResults] = useState<ArticleModel[]>([]);
     const [actif, setActif] = useState(false);
+    const [articlesData, setArticlesData] = useState<ArticleModel[]>([])
 
+    useEffect(()=> {
+        Api.getAll('article/all').then((data) => {
+
+            setArticlesData(data)
+        })
+    }, [])
     function closeModal() {
         setIsOpen(false)
     }
@@ -38,8 +42,8 @@ export default function Dialogs({color}: { color: string }) {
             setActif(true)
             setQuery(searchTerm);
             // Simulation d'une recherche avec un tableau de données statique
-            const filteredResults = mockData.filter(item =>
-                item.toLowerCase().includes(searchTerm.toLowerCase())
+            const filteredResults = articlesData.filter(item =>
+                item.articleName.toLowerCase().includes(searchTerm.toLowerCase())
             );
             setResults(filteredResults);
         } else {
@@ -115,9 +119,16 @@ export default function Dialogs({color}: { color: string }) {
                                                 </div>
                                                 <div
                                                     className={`${actif ? 'block bg-gray-50  w-full  p-5 rounded-[20px] h-auto mt-3' : 'hidden'} `}>
-                                                    <ul>
+                                                    <ul className={"flex flex-col space-y-5"}>
                                                         {results.map((result, index) => (
-                                                            <li key={index}>{result}</li>
+                                                            <li key={index}>
+                                                                <Link
+                                                                    className="hover:text-blue-600  hover:pointer font-bold text-[18px]"
+                                                                    href={`/products/${result.id}`}>
+                                                                    {result.articleName}
+                                                                </Link>
+
+                                                            </li>
                                                         ))}
                                                     </ul>
                                                 </div>

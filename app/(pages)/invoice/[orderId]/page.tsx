@@ -78,9 +78,7 @@ const Invoice = ({ params }: {params: {orderId: string }}) => {
                 })
 
                 setOrderArticle(orderArt);
-                console.log(orderArticle)
             })
-            console.log(orderArticle)
 
 
 
@@ -153,11 +151,11 @@ const Invoice = ({ params }: {params: {orderId: string }}) => {
                             <h1 className={"text-[13px]  text-right"}>Référence client: customer N°{customer?.id}</h1>
                         </div>
 
-                        <div className={""}>
-                            <h1 className={"text-[20px] font-bold"}> {customer?.firstName} {customer?.lastName} </h1>
-                            <h1>Addresse</h1>
-                            <h1>TOGO</h1>
-                            <h1 className={"text-[13px]"}>Tél: +228 {customer?.phone} </h1>
+                        <div className={" flex flex-col space-y-2 self-end"}>
+                            <h1 className={"text-[20px] text-right text-cyan-600 font-bold"}> {customer?.firstName} {customer?.lastName} </h1>
+                            <h1 className={"text-right"}>Addresse</h1>
+                            <h1 className={"text-right"}>TOGO</h1>
+                            <h1 className={"text-[13px] text-right"}>Tél: +228 {customer?.phone} </h1>
                         </div>
                     </div>
                 </div>

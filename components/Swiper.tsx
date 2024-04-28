@@ -17,6 +17,7 @@ import { Autoplay, Pagination, Navigation, FreeMode } from 'swiper/modules';
 import CardArt1 from "@/components/CardArt1";
 import { Api } from '@/api/Api';
 import { ArticleModel } from '@/app/models/ArticleModel';
+import MobileDetect from 'mobile-detect';
 
 interface DataInterface {
     name: string;
@@ -30,35 +31,53 @@ export default function Swipers() {
     const [articleData, setArticleData] = useState<ArticleModel[]>([])
     const [image, setImage] = useState<any[]>([]);
     const [data, setData] = useState<DataInterface[]>([]);
-    useEffect(() => {
-        const dataArray: DataInterface[] = [];
-        Api.getAll('article/all').then((articles: ArticleModel[]) => {
-            articles.forEach((articleElement) => {
-                Api.getAll(`image/articleImage/${articleElement.id}`).then((imgData: any[]) => {
-                    imgData.forEach((img) => {
-                        if (img.article.id == articleElement.id) {
-                            dataArray.push({
-                                name: articleElement.articleName,
-                                price: String(articleElement.price),
-                                description: articleElement.description,
-                                articleId: String(articleElement.id),
-                                imageUrl: img.imageUrl,
-                                imageId: String(img.id)
-                            })
-                        }
 
+    const [isMobile, setIsMobile] = useState(false)
+
+
+
+
+
+    useEffect(() => {
+        const md = new MobileDetect(window.navigator.userAgent);
+
+        setIsMobile(!!md.mobile());
+
+        //declaration of thee variable who detecte the screen
+        const fetchData = async () => {
+            const dataArray: DataInterface[] = [];
+            Api.getAll('article/all').then((articles: ArticleModel[]) => {
+                articles.forEach((articleElement) => {
+                    Api.getAll(`image/articleImage/${articleElement.id}`).then((imgData: any[]) => {
+                        imgData.forEach((img) => {
+                            if (img.article.id == articleElement.id) {
+                                dataArray.push({
+                                    name: articleElement.articleName,
+                                    price: String(articleElement.price),
+                                    description: articleElement.description,
+                                    articleId: String(articleElement.id),
+                                    imageUrl: img.imageUrl,
+                                    imageId: String(img.id)
+                                })
+                            }
+
+                        })
                     })
                 })
+                setData(dataArray);
             })
-            setData(dataArray);
-        })
+
+        }
+
+        fetchData();
 
 
-    }, [])
+
+    }, [isMobile])
     return (
         <>
             <Swiper
-                slidesPerView={2}
+                slidesPerView={isMobile ? 1 : 2}
                 spaceBetween={5}
                 centeredSlides={true}
                 autoplay={{
@@ -70,13 +89,13 @@ export default function Swipers() {
                 }}
                 navigation={true}
                 modules={[Autoplay, Pagination, Navigation]}
-                className="mySwiper flex space-x-5"
+                className="mySwiper flex items-center justify-center space-x-5"
             >
                 {
                     data.map((articles, index) => {
                         if (index <= 4) {
 
-                            return <SwiperSlide key={index}>
+                            return <SwiperSlide className={" relative left-[15%] md:left-[35%] md:right-[30%] flex self-center"} key={index}>
 
                                 <CardArt1 name={articles.name} price={String(articles.price)} description={articles.description} image={articles.imageUrl} id={Number(articles.articleId)} />
 

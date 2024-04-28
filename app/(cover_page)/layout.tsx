@@ -11,8 +11,8 @@ export default function RootLayout({
 
         <div className={``}>
 
-        <NavBar style= "text-white fixed bg-blackOpacity py-2 top-0 px-5 w-full" text_color="text-white"/>
-        {children}
+            <NavBar style="text-white fixed bg-blackOpacity py-2 top-0 px-5 w-full" text_color="text-white"/>
+            {children}
 
         </div>
 

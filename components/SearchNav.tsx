@@ -63,11 +63,11 @@ const SearchNav = () => {
             </button>
         </div>
 
-        <div className={`${actif ? 'block text-black bg-white w-[600px] p-5 rounded-[20px] h-auto mt-5' : 'hidden'} `}>
-            <ul>
+        <div className={`${actif ? 'block text-black bg-white w-[500px] p-5 rounded-[20px] h-auto mt-5' : 'hidden'} `}>
+            <ul className={"flex flex-col space-y-5"}>
                 {results.map((result, index) => (
                     <li key={index}>
-                        <Link className="hover:text-blue-600 hover:pointer font-bold text-lg" href={`/products/${result.id}`}>
+                        <Link className="hover:text-blue-600  hover:pointer font-bold text-[18px]" href={`/products/${result.id}`}>
                             {result.articleName}
                         </Link>
                         

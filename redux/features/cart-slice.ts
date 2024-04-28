@@ -10,6 +10,7 @@ interface cartModel{
 }
 
 
+
 const cartSlice = createSlice({
     name: 'cart',
     initialState: [],
@@ -21,10 +22,21 @@ const cartSlice = createSlice({
         },
         removeProduct: (state, action) => {
             // Logique pour supprimer un produit du panier
-            // @ts-ignore
-            return state.filter((item) => item.id !== action.payload);
+
+            return state.filter((item: any) => item.id !== action.payload);
+        },
+
+        updateProduct: (state, action) => {
+            // Logique pour mettre à jour un produit dans le panier
+            const { index, updatedProduct } = action.payload;
+            // Créer une copie du tableau de produits
+            const newArray: any[] = [...state];
+            // Mettre à jour le produit à l'index spécifié avec le nouveau produit
+            newArray[index] = updatedProduct;
+            // Retourner le nouveau tableau mis à jour
+
         },
     },
 });
-export const { addProduct, removeProduct } = cartSlice.actions;
+export const { addProduct, removeProduct, updateProduct } = cartSlice.actions;
 export default cartSlice.reducer;
