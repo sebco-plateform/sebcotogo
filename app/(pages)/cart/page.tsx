@@ -204,7 +204,7 @@ const Cart = () => {
         <div className=" mt-[35%] md:mt-[10%] px-3 md:px-20 flex flex-col items-center justify-center">
             <h1 className="text-[25px] text-start ">Votre panier</h1>
             {/** cart product list of mobile */}
-            <section className={"md:hidden flex flex-col space-y-5 mt-10 "}>
+            <section className={"hidden"}>
                 {
                     data.map((items, index) => {
                         return <div key={index} className={" p-2 w-full bg-white flex items-center justify-between content-between"}>
@@ -273,7 +273,7 @@ const Cart = () => {
 
 
             {/** cart product list of web */}
-            <section className="hidden md:flex mt-20 mx-2">
+            <section className="flex mt-20 mx-2">
                 <Table columns={columns} dataSource={data}/>
             </section>
 
