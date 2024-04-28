@@ -13,7 +13,7 @@ const Card2 = ({articleName, price, id, image,}: CardInter) => {
     const route = useRouter();
     return (
         <div
-            className={'bg-white shadow-xl rounded-[15px] md:w-[200px] w-full  p-3 h-[270px] flex flex-col items-center justify-center'}>
+            className={'bg-white shadow-xl rounded-[15px] md:w-[200px] w-[300px]  p-3  h-[300px] md:h-[270px] flex flex-col items-center justify-center'}>
             {/*image*/}
             <Image src={image}
                    alt={""}
@@ -26,7 +26,7 @@ const Card2 = ({articleName, price, id, image,}: CardInter) => {
             {/*name*/}
             <h1 className={'font-bold mt-2'}>{articleName}</h1>
             {/*price*/}
-            <h1 className={'font-light'}>{price} TTC</h1>
+            <h1 className={'font-medium text-cyan-600'}>{price} TTC</h1>
 
             {/*button*/}
             <Button variant={'default'} 

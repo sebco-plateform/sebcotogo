@@ -1,5 +1,7 @@
+
 import {Api} from "@/api/Api";
 import {DataInterface} from "@/lib/interfaces";
+import {Resend} from "resend";
 
 class Resources {
 
@@ -41,6 +43,12 @@ class Resources {
             throw error;
         }
     }
+
+
+
 }
+
+
+export const resend = new Resend('re_CWcnuVwV_C7GCM4bG7xHazmFgtVPKaXRj');
 
 export default Resources;

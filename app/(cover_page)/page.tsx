@@ -12,6 +12,9 @@ import {useRouter} from "next/navigation";
 import Image from "next/image";
 import {useSelector} from "react-redux";
 import {RootState} from "@/redux/store";
+import EmptyData from "@/components/EmptyData";
+import { Skeleton } from "@/components/ui/skeleton";
+import CommentSwiper from "@/components/CommentSwiper";
 
 
 interface articleIterf {
@@ -38,12 +41,13 @@ export default function Home() {
     const [data2, setData2] = useState<DataInterface[]>([])
     const [data3, setData3] = useState<DataInterface[]>([])
     const isAuth = useSelector((state: RootState) => state.authReducer.value.isAuth)
-
+    const [loading, setLoading] = useState(false);
     const route = useRouter();
 
 
 
     useEffect(() => {
+        setLoading(true)
 
         Api.getAll('article/all').then((data) => {
             
@@ -137,7 +141,7 @@ export default function Home() {
 
         fetchData3();
 
-
+        setLoading(false)
 
     }, [])
 
@@ -186,7 +190,7 @@ export default function Home() {
 
             {/*search par*/}
             <div className={'md:block hidden mt-10 ml-[30px]'}>
-                <div className={'flex space-x-2 bg-white h-[50px] w-[600px] rounded-[20px] px-3'}>
+                <div className={'flex space-x-2 items-center bg-white h-[50px] w-[600px] rounded-[20px] px-3'}>
                     <form>
                         <input
                             className={'md:w-[450px] h-9  my-3 ml-2 bg-white outline-0 border-0 focus:border-0 focus:outline-0 '}
@@ -204,10 +208,10 @@ export default function Home() {
                     </button>
                 </div>
                 <div className={`${actif ? 'block bg-white w-[600px] p-5 rounded-[20px] h-auto mt-3 absolute' : 'hidden'} `}>
-                    <ul>
+                    <ul className={"flex flex-col space-y-5"}>
                         {results.map((result, index) => (
                             <li key={index}>
-                                <Link href={'/product/1'}>
+                                <Link className={"hover:text-blue-600"} href={'/product/1'}>
                                     {result.articleName}
                                 </Link>
                             
@@ -221,12 +225,15 @@ export default function Home() {
 
         <div className={'mt-10 md:px-20 pl-x'}>
 
-            <h1 className={'text-[30px] font-medium text-black'}>
+            <h1 className={'text-[30px] px-3 md:px-0 font-medium text-black'}>
                 Articles
             </h1>
 
             {/*articles*/}
-            <Swipers />
+            <div className={"flex items-center justify-center w-full px-3 md:px-0"}>
+                <Swipers />
+            </div>
+
 
 
             {/*categori serction*/}
@@ -236,24 +243,26 @@ export default function Home() {
 
                 <Tabs defaultValue="acier" className="w-auto mt-10">
                     <TabsList>
-                        <TabsTrigger value="acier">acier</TabsTrigger>
-                        <TabsTrigger value="cimant">cimant</TabsTrigger>
-                        <TabsTrigger value="agérégat">agérégat</TabsTrigger>
+                        <TabsTrigger value="acier" className={"font-bold text-[18px]"}>acier</TabsTrigger>
+                        <TabsTrigger value="cimant" className={"font-bold text-[18px]"}>cimant</TabsTrigger>
+                        <TabsTrigger value="agérégat" className={"font-bold text-[18px]"}>agérégat</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="acier" className={' flex items-center justify-center flex-col space-y-3  md:flex-row md:space-x-5'}>
+                    <TabsContent value="acier" className={'md:px-10 px-3 w-full items-center justify-center  flex flex-col space-y-5 md:space-y-0 md:grid grid-cols-1 md:grid-cols-5 gap-4'}>
                         {
-                            data1.length == 0 ?
-                                <div className={"flex flex-col  w-auto"}>
-                                    <Image src={"/images/sammy-sailor-looking-through-telescope-off-the-mast.gif"}
-                                           alt={"data empty"}
-                                           priority
-                                           width={400}
-                                           height={400}
-                                           className={"bg-center bg-cover"}
-                                    />
+                            loading ?
+                                [1,2,3,4,5].map((items) => {
+                                    return (
+                                        <div>
+                                            <Skeleton className={"rounded-[15px] md:w-[200px] w-[300px]   h-[300px] md:h-[270px]"} />
+                                        </div>
 
-                                    <h1 className={"text-center font-regular text-blue-600 text-[25px]"}>Pas d'article pour cette catégorie</h1>
-                                </div> :
+                                    )
+                                })
+
+                                :
+                            data1.length == 0 ?
+                                <EmptyData/>
+                                :
                             data1.map((articles, index) => {
 
                                 return <div key={index}>
@@ -262,20 +271,22 @@ export default function Home() {
                             })
                         } 
                     </TabsContent>
-                    <TabsContent value="cimant" className={'flex items-center justify-center flex-col space-y-3  md:flex-row md:space-x-5'}>
+                    <TabsContent value="cimant" className={'md:px-10 px-3 w-full items-center justify-center flex flex-col space-y-5 md:space-y-0 md:grid grid-cols-1 md:grid-cols-5 gap-4'}>
                     {
-                        data2.length == 0 ?
-                            <div className={"flex flex-col  md:relative md:left-[70%] w-full"}>
-                                <Image src={"/images/sammy-sailor-looking-through-telescope-off-the-mast.gif"}
-                                       alt={"data empty"}
-                                       priority
-                                       width={700}
-                                       height={700}
-                                       className={"bg-center bg-cover"}
-                                />
+                        loading ?
+                            [1,2,3,4,5].map((items) => {
+                                return (
+                                    <div>
+                                        <Skeleton className={"rounded-[15px] md:w-[200px] w-[300px]   h-[300px] md:h-[270px]"} />
+                                    </div>
 
-                                <h1 className={"text-center font-regular text-blue-600 text-[25px]"}>Pas d'article pour cette catégorie</h1>
-                            </div> :
+                                )
+                            })
+
+                            :
+                        data2.length == 0 ?
+                            <EmptyData/>
+                             :
                             data2.map((articles, index) => {
 
                                 return <div key={index}>
@@ -285,20 +296,22 @@ export default function Home() {
                         } 
                         
                     </TabsContent>
-                    <TabsContent value="agérégat" className={'flex items-center justify-center flex-col space-y-3 md:flex-row md:space-x-5'}>
+                    <TabsContent value="agérégat" className={'md:px-10 px-3 w-full items-center justify-center flex flex-col space-y-5 md:space-y-0 md:grid grid-cols-1 md:grid-cols-5 gap-4'}>
                     {
-                        data3.length == 0 ?
-                            <div className={"flex flex-col  md:relative md:left-[70%] w-full"}>
-                                <Image src={"/images/sammy-sailor-looking-through-telescope-off-the-mast.gif"}
-                                       alt={"data empty"}
-                                       priority
-                                       width={700}
-                                       height={700}
-                                       className={"bg-center bg-cover"}
-                                />
+                        loading ?
+                            [1,2,3,4,5].map((items) => {
+                                return (
+                                    <div>
+                                        <Skeleton className={"rounded-[15px] md:w-[200px] w-[300px]   h-[300px] md:h-[270px]"} />
+                                    </div>
 
-                                <h1 className={"text-center font-regular text-blue-600 text-[25px]"}>Pas d'article pour cette catégorie</h1>
-                            </div> :
+                                )
+                            })
+
+                            :
+                        data3.length == 0 ?
+                            <EmptyData/>
+                             :
                             data3.map((articles, index) => {
                                 return <div key={index}>
                                     <Card2 articleName={articles.name} price={Number(articles.price)} id={Number(articles.articleId)} image={articles.imageUrl} />
@@ -311,6 +324,13 @@ export default function Home() {
 
             </section>
 
+
+            <section className={" my-10"}>
+                <h1 className={'text-[30px] px-3 md:px-0 font-medium text-black'}>
+                    Avis des clients
+                </h1>
+                <CommentSwiper/>
+            </section>
         </div>
 
     </main>

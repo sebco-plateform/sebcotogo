@@ -16,6 +16,7 @@ import SearchNav from '@/components/SearchNav';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import ProfilBtn from "@/components/ProfilBtn";
+import NotificationDrawer from "@/components/NotificationDrawer";
 
 
 interface NavInterface  {
@@ -34,11 +35,11 @@ function NavBar({ style, text_color } : NavInterface) {
     }, []);
 
     const navItemWeb1 = [
-        {
+        /*{
             name: "Demander un Devis",
             icon: "",
             route: "/",
-        },
+        },*/
     
         {
             name: "Se Connecter",
@@ -54,8 +55,8 @@ function NavBar({ style, text_color } : NavInterface) {
     
         {
             name: "",
-            icon:(<Badge count={0}> <IoIosNotifications  className={`h-[24px] w-[24px] ${text_color} `}/> </Badge> ) ,
-            route: "/notifications",
+            icon:(<Badge count={0}> <NotificationDrawer text_color={text_color}/> </Badge> ) ,
+            route: "#",
         },
     
         {
@@ -72,21 +73,21 @@ function NavBar({ style, text_color } : NavInterface) {
     ]
     
     const navItemWeb1Connect = [
-        {
+        /*{
             name: "Demander un Devis",
             icon: "",
             route: "/",
+        },*/
+    
+        {
+            name: "",
+            icon:(<Badge count={0}> <NotificationDrawer text_color={text_color}/> </Badge> ) ,
+            route: "#",
         },
     
         {
             name: "",
-            icon:(<Badge count={0}> <IoIosNotifications  className={'h-[24px] w-[24px] '}/> </Badge> ) ,
-            route: "/notifications",
-        },
-    
-        {
-            name: "",
-            icon:(<Badge count={item.length}><TiShoppingCart  size={24} className={'h-[24px] w-[24px] '}/> </Badge> ) ,
+            icon:(<Badge count={item.length}><TiShoppingCart  size={24} className={`h-[24px] w-[24px] ${text_color} `}/> </Badge> ) ,
             route: "/cart",
         },
     
@@ -115,8 +116,8 @@ function NavBar({ style, text_color } : NavInterface) {
     
         {
             name: "",
-            route: '/notifications',
-            icon:(<Badge count={0}> <IoIosNotifications  className={`h-[24px] w-[24px] ${text_color} `}/>  </Badge> ) ,
+            route: '#',
+            icon:(<Badge count={0}> <NotificationDrawer text_color={text_color}/>  </Badge> ) ,
         },
     
         {
@@ -139,8 +140,8 @@ function NavBar({ style, text_color } : NavInterface) {
     
         {
             name: "",
-            route: '/notifications',
-            icon:(<Badge count={0}> <IoIosNotifications  className={`h-[24px] w-[24px] ${text_color} `}/>  </Badge> ) ,
+            route: '#',
+            icon:(<Badge count={0}> <NotificationDrawer text_color={text_color}/>  </Badge> ) ,
         },
     
         {
@@ -164,20 +165,20 @@ function NavBar({ style, text_color } : NavInterface) {
             name: 'A propos',
             route: '/about',
         },
-        {
+       /* {
             name: 'Notre equipe',
             route: '/about',
         },
         {
             name: 'Historique',
             route: '/history',
-        },
+        },*/
     ]
 
     return (
         <nav className={style}>
             {/*items 1*/}
-            <div className={'flex justify-between'}>
+            <div className={'flex justify-between content-between items-center '}>
                 {/*image or bugger icone**/}
 
                 {/*image*/}
@@ -186,14 +187,17 @@ function NavBar({ style, text_color } : NavInterface) {
                 </div>
 
                  {/*searche bar*/}
-                <SearchNav />
+                <div className={"w-full"}>
+                    <SearchNav />
+                </div>
+
 
                 {/*icon responsive*/}
-                <div className={'md:hidden w-full'}>
+                <div className={'md:hidden flex ml-5 mb-5 self-start w-full'}>
                     <Tap
                         props={
                             <div className={'flex space-x-2'}>
-                                <GiHamburgerMenu style={{color: ''}} className={text_color}/>
+                                <GiHamburgerMenu style={{color: ''}} className={`${text_color}  w-[20px] h-[20px]`}/>
                             </div>
                         }
 
@@ -204,8 +208,8 @@ function NavBar({ style, text_color } : NavInterface) {
 
                 </div>
 
-                {/*Nav items2 web*/}
-                <div className={'hidden  md:flex space-x-5 w-[800px] relative top-5'}>
+                {/*Nav items2 web connect*/}
+                <div className={'hidden  md:flex w-full space-x-5 items-center justify-end'}>
                     {
                         isAuth ? navItemWeb1Connect.map((items, index) => {
                                 return <Link href={items.route}
@@ -279,12 +283,12 @@ function NavBar({ style, text_color } : NavInterface) {
 
 
             {/*items 2 web*/}
-            <div className={'hidden md:flex justify-between md:w-full'}>
+            <div className={'hidden md:flex justify-between content-between md:w-full'}>
 
-                <div className={`flex space-x-3 w-full ${text_color} ml-5`}>
+                <div className={`flex  space-x-3 w-auto ${text_color} ml-5`}>
                     <Tap
                         props={
-                            <div className={'flex space-x-2'}>
+                            <div className={'flex space-x-2 items-center justify-center'}>
                                 <GiHamburgerMenu style={{color: ''}} className={text_color}/>
                                 <h1 className={text_color}>
                                     Tous les catégories
@@ -300,8 +304,7 @@ function NavBar({ style, text_color } : NavInterface) {
                         */}
                 </div>
 
-
-                <div className={'flex space-x-2 w-full relative left-[10%]'}>
+                <div className={'flex space-x-2 w-auto   '}>
                     {
                         navItems2.map((items, index) => {
                             return <div className={''} 

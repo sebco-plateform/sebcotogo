@@ -21,47 +21,48 @@ import Image from "next/image";
 const ProductPage = ({params}: {params: {productId: string}}) => {
     const [urls, setUrls] = useState('');
     const [isClicked, setIsClick] = useState(0);
-    const [qte, setQte] = useState(0);
+    const [qte, setQte] = useState(1);
     const { toast } = useToast();
     const [productData, setProductData] = useState<any>()
     const [characteristicData, setCharacteristicData] = useState<any[]>([])
     const [imageData, setImageData] = useState<any[]>([])
     const [data, setData] = useState<DataInterface[]>([]);
+    const [price, setPrice] = useState(0);
+    const [priceTotal, setPriceTotal] = useState(0);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        Api.getAll(`article/single/${params.productId}`).then((articleData) => {
+        Api.getAll(`article/single/${params.productId}`).then((articleData: any) => {
             setProductData(articleData);
+            setPrice(Number(articleData.price))
+            setPriceTotal(Number(articleData.price))
         })
 
-        const dataArray: DataInterface[] = [];
         const fetchData = async () => {
-            try {
-                const articles: any[] = await Api.getAll(`article/all`);
-                const dataArray: DataInterface[] = [];
+            const dataArray: DataInterface[] = [];
+            Api.getAll('article/all').then((articles: ArticleModel[]) => {
+                articles.forEach((articleElement) => {
+                    Api.getAll(`image/articleImage/${articleElement.id}`).then((imgData: any[]) => {
+                        imgData.forEach((img) => {
+                            if (img.article.id == articleElement.id) {
+                                dataArray.push({
+                                    name: articleElement.articleName,
+                                    price: String(articleElement.price),
+                                    description: articleElement.description,
+                                    articleId: String(articleElement.id),
+                                    imageUrl: img.imageUrl,
+                                    imageId: String(img.id)
+                                })
+                            }
 
-                for (const articleElement of articles) {
-                    const imgData: any[] = await Api.getAll(`image/articleImage/${articleElement.article_id}`);
-                    const relevantImages = imgData.filter(img => img.article.id == articleElement.article_id);
-
-                    relevantImages.forEach(img => {
-                        dataArray.push({
-                            name: articleElement.article_articleName,
-                            price: String(articleElement.article_price),
-                            description: articleElement.article_description,
-                            articleId: String(articleElement.article_id),
-                            imageUrl: img.imageUrl,
-                            imageId: String(img.id)
-                        });
-                    });
-                }
-
+                        })
+                    })
+                })
                 setData(dataArray);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
+            })
+
+        }
 
         fetchData();
 
@@ -79,7 +80,9 @@ const ProductPage = ({params}: {params: {productId: string}}) => {
 
         })
 
+
     }, []);
+
 
     return (
         <div className={" mt-[35%] md:mt-[10%] px-3 md:px-20 flex flex-col items-center justify-center"}>
@@ -106,16 +109,16 @@ const ProductPage = ({params}: {params: {productId: string}}) => {
                                               setIsClick(data.id);
                                               setUrls(data.imageUrl);
                                             }}
-                                            className={isClicked == data.id ? "w-[50px] h-[50px] rounded-sm border-2 border-buttonColor" : "w-[50px] h-[50px] rounded-sm border-2 border-black"}
+                                            className={isClicked == data.id ? "w-[50px] h-[50px] rounded-sm border-2 border-buttonColor p-1 flex items-center justify-center" : "flex items-center justify-center p-1 w-[50px] h-[50px] rounded-sm border-2 border-black"}
                                 >
-                                    <img src={data.imageUrl} className={"bg-cover bg-center"} alt={"image"} />
+                                    <img src={data.imageUrl} className={"bg-cover  bg-center"} alt={"image"} />
                                 </div>
                             })
                         }
                     </div>
 
                     {/* image*/}
-                        <div className={"bg-purple-100 md:w-[400px] h-[300px] p-3"} >
+                        <div className={"bg-purple-100 md:w-[400px] h-[400px] p-3"} >
                             <img
                                 src={urls}
                                 alt={'image'}
@@ -129,18 +132,25 @@ const ProductPage = ({params}: {params: {productId: string}}) => {
                         <h1 className={'text-[25px] font-bold underline'}>Caractéristiques</h1>
 
                         {/* caracteristiques data*/}
-                        <div className={'mt-3'}>
-                            {
-                                characteristicData.map((charact, index) => {
-                                    return   <div key={index} className={'flex space-x-1'}>
-                                    <h1>{charact.characteristic.charactName}</h1>
-                                    <h1>: {charact.characteristic.value} </h1>
-                                </div>
-                                    
-                                    
-                                })
-                            }
+                        <div className={"flex space-x-5 items-center"}>
+                            <div className={'mt-3 flex flex-col space-y-3'}>
+                                {
+                                    characteristicData.map((charact, index) => {
+                                        return <div key={index} className={'flex space-x-1'}>
+                                            <h1>{charact.characteristic.charactName}</h1>
+                                            <h1 className={"font-bold text-sky-400"}>: {charact.characteristic.value} </h1>
+                                        </div>
+
+
+                                    })
+                                }
+                            </div>
+
+                            <div className={"text-[20px] font-bold text-white bg-lime-600 p-3 rounded-md"}>
+                                {price} TTC
+                            </div>
                         </div>
+
 
                         {/* button to add product*/}
                         <div className={'flex flex-col mt-[10%] space-y-3'}>
@@ -149,11 +159,11 @@ const ProductPage = ({params}: {params: {productId: string}}) => {
                                 <Button variant={'outline'}
                                         size={'icon'}
                                         onClick={() => {
-                                            if(qte == 0) {
-                                                setQte(0);
-                                            }
-                                            else {
+                                            if (qte == 0) {
+                                                setQte(1);
+                                            } else {
                                                 setQte(qte-1);
+                                                setPrice(price-priceTotal);
                                             }
                                         }}
                                 >
@@ -168,7 +178,8 @@ const ProductPage = ({params}: {params: {productId: string}}) => {
                                 <Button variant={'outline'}
                                         size={'icon'}
                                         onClick={() => {
-                                            setQte(qte+1)
+                                            setQte(qte+1);
+                                            setPrice(price+priceTotal);
                                         }}
                                 >
                                     <FaPlus className={'w-[25]px] h-[25px]'}/>
@@ -188,7 +199,7 @@ const ProductPage = ({params}: {params: {productId: string}}) => {
                                         } else {
                                             const modelCart =  new CartModel(productData?.id, productData?.articleName, urls, Number(productData?.price), Number(productData?.price * qte), qte);
                                             dispatch(addProduct(modelCart));
-                                            setQte(0);
+                                            setQte(1);
                                             toast({
                                             title: "Panier",
                                             description: "Article ajouté au panier!!",
@@ -232,7 +243,7 @@ const ProductPage = ({params}: {params: {productId: string}}) => {
                             <h1 className={"text-center font-regular text-blue-600 text-[25px]"}>Pas d'article</h1>
                         </div> :
                         data.map((art, index) => {
-                            if (index <= 3) {
+                            if (index <= 4) {
                                 return <div key={index}>
                                     <CardArt1 name={art.name} price={String(art.price)} description={art.description}
                                               image={art.imageUrl} id={Number(art.articleId)}/>

@@ -1,5 +1,5 @@
 export class Api {
-    static url = "https://sebco-api.vercel.app/" //"http://localhost:3001/"; // process.env.API_URL!;
+    static url ="http://localhost:3001/"; //"https://sebco-api.vercel.app/" // // process.env.API_URL!;
 
     static async  post(data: any, endPoint: string) {
         const response = await fetch(`${Api.url}${endPoint}`, {
@@ -48,7 +48,7 @@ export class Api {
 
 
     static async  update(data: any, endPoint: string) {
-        const response = await fetch(`${Api.url}`,
+        const response = await fetch(`${Api.url}${endPoint}`,
          {
             //gitit mode: 'no-cors',
             method: 'PATCH',
