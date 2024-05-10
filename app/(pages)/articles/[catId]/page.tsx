@@ -18,7 +18,6 @@ export default  function Articles({params}: {params: {catId: string}})  {
     const [data, setData] = useState<DataInterface[]>([])
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingCat, setIsLoadingCat] = useState(false);
-
     const [catId, setCatId] = useState(params.catId);
     const route = useRouter()
 

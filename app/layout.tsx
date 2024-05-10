@@ -1,8 +1,6 @@
 import type {Metadata} from "next";
 import {Inter, Josefin_Sans} from "next/font/google";
 import "./globals.css";
-import Footer from "@/components/Footer";
-import DevisBtn from "@/components/DevisBtn";
 import {Toaster} from "@/components/ui/toaster";
 import {ReduxProvider} from "@/redux/provider";
 import {AntdRegistry} from '@ant-design/nextjs-registry';
@@ -44,7 +42,7 @@ export default function RootLayout({
 
                 {children}
 
-                <Footer/>
+
 
                 <Toaster/>
             </AntdRegistry>

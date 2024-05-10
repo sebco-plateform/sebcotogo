@@ -20,10 +20,9 @@ const Congratulation = ({params}: {params: {orderId: string}}) => {
     const [width, setWidth] = useState(0);
     const [height, setHeight] = useState(0);
     const router = useRouter()
-    const isAuth = useSelector((state: RootState) => state.authReducer.value.isAuth)
-    const uid = useSelector((state: RootState) => state.authReducer.value.uid)
+    const isAuth = useSelector((state: RootState) => state.auth.value.isAuth)
+    const uid = useSelector((state: RootState) => state.auth.value.uid)
     const { toast } = useToast();
-
 
     useEffect(() => {
         setHeight(window.innerHeight)
@@ -84,7 +83,7 @@ const Congratulation = ({params}: {params: {orderId: string}}) => {
                                 {formik.touched.comment  && formik.errors.comment ? formik.errors.comment : ""}
                             </label>
                             <Input type={"text"}
-                                   placeholder={"Entrer votre commentairre"}
+                                   placeholder={"Entrer votre commentaire"}
                                    className={"h-[100px]"}
                                    name={"comment"}
                                    value={formik.values.comment}

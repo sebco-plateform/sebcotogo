@@ -2,27 +2,24 @@
 import CardArt1 from "@/components/CardArt1";
 import React, {useEffect, useState} from "react";
 import {Button} from "@/components/ui/button";
-import { FaPlus } from "react-icons/fa6";
-import { FaCartPlus } from "react-icons/fa";
-import { FaMinus } from "react-icons/fa6";
-import { useToast } from "@/components/ui/use-toast"
-import { ToastAction } from "@radix-ui/react-toast";
-import { Api } from "@/api/Api";
-import { useDispatch } from "react-redux";
+import {FaMinus, FaPlus} from "react-icons/fa6";
+import {FaCartPlus} from "react-icons/fa";
+import {useToast} from "@/components/ui/use-toast"
+import {ToastAction} from "@radix-ui/react-toast";
+import {Api} from "@/api/Api";
+import {useDispatch} from "react-redux";
 import CartModel from "@/app/models/CartModel";
-import { addProduct } from "@/redux/features/cart-slice";
-import { ArticleModel } from "@/app/models/ArticleModel";
+import {addProduct} from "@/redux/features/cart-slice";
+import {ArticleModel} from "@/app/models/ArticleModel";
 import {DataInterface} from "@/lib/interfaces";
 import Image from "next/image";
 
 
-
-
-const ProductPage = ({params}: {params: {productId: string}}) => {
+const ProductPage = ({params}: { params: { productId: string } }) => {
     const [urls, setUrls] = useState('');
     const [isClicked, setIsClick] = useState(0);
     const [qte, setQte] = useState(1);
-    const { toast } = useToast();
+    const {toast} = useToast();
     const [productData, setProductData] = useState<any>()
     const [characteristicData, setCharacteristicData] = useState<any[]>([])
     const [imageData, setImageData] = useState<any[]>([])
@@ -67,12 +64,12 @@ const ProductPage = ({params}: {params: {productId: string}}) => {
         fetchData();
 
         Api.getAll(`characteristic-article/findCharactByArticleId/${params.productId}`).then((charactData) => {
-            
+
             setCharacteristicData(charactData);
         })
 
         Api.getAll(`image/articleImage/${params.productId}`).then((imgData) => {
-          
+
             setImageData(imgData);
             imgData.forEach((element: any) => {
                 setUrls(element.imageUrl)
@@ -86,11 +83,11 @@ const ProductPage = ({params}: {params: {productId: string}}) => {
 
     return (
         <div className={" mt-[35%] md:mt-[10%] px-3 md:px-20 flex flex-col items-center justify-center"}>
-            <section className={'md:self-start'} >
+            <section className={'md:self-start'}>
                 <h1 className={"text-[30px] font-bold"}>{productData?.articleName}</h1>
 
                 <p className={"text-[15px] font-light md:w-[600px]"}>
-                {productData?.description}
+                    {productData?.description}
                 </p>
             </section>
 
@@ -106,25 +103,25 @@ const ProductPage = ({params}: {params: {productId: string}}) => {
                             imageData.map((data, index) => {
                                 return <div key={index}
                                             onClick={() => {
-                                              setIsClick(data.id);
-                                              setUrls(data.imageUrl);
+                                                setIsClick(data.id);
+                                                setUrls(data.imageUrl);
                                             }}
                                             className={isClicked == data.id ? "w-[50px] h-[50px] rounded-sm border-2 border-buttonColor p-1 flex items-center justify-center" : "flex items-center justify-center p-1 w-[50px] h-[50px] rounded-sm border-2 border-black"}
                                 >
-                                    <img src={data.imageUrl} className={"bg-cover  bg-center"} alt={"image"} />
+                                    <img src={data.imageUrl} className={"bg-cover  bg-center"} alt={"image"}/>
                                 </div>
                             })
                         }
                     </div>
 
                     {/* image*/}
-                        <div className={"bg-purple-100 md:w-[400px] h-[400px] p-3"} >
-                            <img
-                                src={urls}
-                                alt={'image'}
-                                className={urls =="" ? "hidden": 'flex bg-cover bg-center  w-full h-full'}
-                            />
-                        </div>
+                    <div className={"bg-purple-100 md:w-[400px] h-[400px] p-3"}>
+                        <img
+                            src={urls}
+                            alt={'image'}
+                            className={urls == "" ? "hidden" : 'flex bg-cover bg-center  w-full h-full'}
+                        />
+                    </div>
 
 
                     {/* caracterisques*/}
@@ -159,11 +156,9 @@ const ProductPage = ({params}: {params: {productId: string}}) => {
                                 <Button variant={'outline'}
                                         size={'icon'}
                                         onClick={() => {
-                                            if (qte == 0) {
-                                                setQte(1);
-                                            } else {
-                                                setQte(qte-1);
-                                                setPrice(price-priceTotal);
+                                            if (qte > 1) {
+                                                setQte(qte - 1);
+                                                setPrice(price - priceTotal);
                                             }
                                         }}
                                 >
@@ -178,8 +173,8 @@ const ProductPage = ({params}: {params: {productId: string}}) => {
                                 <Button variant={'outline'}
                                         size={'icon'}
                                         onClick={() => {
-                                            setQte(qte+1);
-                                            setPrice(price+priceTotal);
+                                            setQte(qte + 1);
+                                            setPrice(price + priceTotal);
                                         }}
                                 >
                                     <FaPlus className={'w-[25]px] h-[25px]'}/>
@@ -188,34 +183,35 @@ const ProductPage = ({params}: {params: {productId: string}}) => {
 
                             <Button className={'bg-buttonColor flex space-x-3'}
                                     size={'lg'}
-                                    onClick={ () => {
-                                        if (qte <= 0) {
+                                    onClick={() => {
+                                        if (qte < 1) {
                                             toast({
                                                 title: "Panier",
                                                 description: "ajouter au moin une article!!",
                                                 variant: 'destructive',
                                                 action: <ToastAction altText="Reessayer">Try again</ToastAction>,
-                                            })
+                                            });
                                         } else {
-                                            const modelCart =  new CartModel(productData?.id, productData?.articleName, urls, Number(productData?.price), Number(productData?.price * qte), qte);
+                                            const modelCart = new CartModel(productData?.id, productData?.articleName, urls, Number(productData?.price), Number(productData?.price * qte), qte);
                                             dispatch(addProduct(modelCart));
                                             setQte(1);
+                                            setPrice(priceTotal);
                                             toast({
-                                            title: "Panier",
-                                            description: "Article ajouté au panier!!",
-                                        })
+                                                title: "Panier",
+                                                description: "Article ajouté au panier!!",
+                                            })
                                         }
-                                        
+
                                     }
 
                                     }
 
                             >
 
-                                   <h1>
-                                       Ajouter au panier
-                               </h1>
-                                   <FaCartPlus  className={'text-white w-[20px] h-[20px]'}/>
+                                <h1>
+                                    Ajouter au panier
+                                </h1>
+                                <FaCartPlus className={'text-white w-[20px] h-[20px]'}/>
 
                             </Button>
                         </div>

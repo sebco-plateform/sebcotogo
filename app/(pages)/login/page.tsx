@@ -37,7 +37,11 @@ const Login = () => {
                    dispatch(logIn(data.id));
                    values.passwords = "";
                    values.phone = "";
-                   route.push('/cart');
+                   if(data.role == "customer" || data.role == "driver") {
+                       route.push('/cart');
+                   } else {
+                       route.push('/admin');
+                   }
                 }
                 else {
                     setErrorMessage('Le numéro ou le mot de passe est incorrecte. Réessayez!!!!');
@@ -45,7 +49,6 @@ const Login = () => {
                     values.phone = "";
                     setLoading(false)
                 }
-                
             }
             else {
                 setErrorMessage('Le numéro ou le mot de passe est incorrecte. Réessayez!!!!');

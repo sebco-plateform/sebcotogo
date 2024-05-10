@@ -49,7 +49,7 @@ const columns: TableProps<DataType>['columns'] = [
 
 const OrderDoneTable: React.FC = () => {
     const [orders, setOrders] = useState<DataType[]>([]);
-    const uid = useSelector((state: RootState) => state.authReducer.value.uid);
+    const uid = useSelector((state: RootState) => state.auth.value.uid);
 
 
     useEffect(() => {

@@ -9,7 +9,7 @@ import {RootState} from "@/redux/store";
 
 const History = () => {
     const [orders, setOrders] = useState<any[]>([])
-    const uid = useSelector((state: RootState) => state.authReducer.value.uid)
+    const uid = useSelector((state: RootState) => state.auth.value.uid)
 
     const [loading, setLoading] = useState(false);
 

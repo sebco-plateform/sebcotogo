@@ -1,28 +1,28 @@
 "use client"
-import ConfirmationEmail from "@/components/ConfirmationEmail";
-import {resend} from "@/lib/resources";
-import {useEffect, useState} from "react";
+import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+} from "@/components/ui/tabs"
 const Test = () => {
-    const [ok, setOk] = useState(false)
 
 
     return (
-        <div className={' mt-[35%] md:mt-[10%] px-3 md:px-20 flex flex-col items-center justify-center'}>
-            <button type={"button"} onClick={ async () => {
-                await fetch(`/api/send`, {
-                    //mode: 'no-cors',
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({email: "tiassousylvain6120@gmail.com"}),
-                }).then((val)  => {
+        <div className={'flex '}>
+            <Tabs activationMode={"manual"} defaultValue="account" className="w-[400px]">
+                <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="account">Account</TabsTrigger>
+                    <TabsTrigger value="password">Password</TabsTrigger>
+                </TabsList>
+                <TabsContent value="account">
+                    valuer acount
+                </TabsContent>
+                <TabsContent value="password">
+                   value password
+                </TabsContent>
+            </Tabs>
 
-                    if(val.ok) {
-                        console.log(val)
-                    }
-                });
-            } }>click me</button>
         </div>
     );
 }

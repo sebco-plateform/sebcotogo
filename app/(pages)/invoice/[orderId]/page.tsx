@@ -52,8 +52,8 @@ const columns: TableProps<DataType>['columns'] = [
 
 
 const Invoice = ({ params }: {params: {orderId: string }}) => {
-    const isAuth = useSelector((state: RootState) => state.authReducer.value.isAuth)
-    const uid = useSelector((state: RootState) => state.authReducer.value.uid)
+    const isAuth = useSelector((state: RootState) => state.auth.value.isAuth)
+    const uid = useSelector((state: RootState) => state.auth.value.uid)
     const [order, setOrder] = useState<OrderModel>()
     const [orderArticle, setOrderArticle] = useState<DataType[]>([])
     const [customer, setCustomer] = useState<CustomerModel>()
