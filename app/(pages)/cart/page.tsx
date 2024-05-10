@@ -2,17 +2,18 @@
 
 import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { Space, Table, Tag } from 'antd';
+import { Space, Table } from 'antd';
 import type { TableProps } from 'antd';
 import { Button } from "@/components/ui/button";
-import { FaMinus, FaPlus } from "react-icons/fa6";
 import React, { ReactNode, useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { BsTrash3 } from "react-icons/bs";
 import CartModel from "@/app/models/CartModel";
-import {addProduct, removeProduct, updateProduct} from "@/redux/features/cart-slice";
+import {removeProduct, updateProduct} from "@/redux/features/cart-slice";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { FaPlus } from "react-icons/fa6";
+import { FaMinus } from "react-icons/fa6";
 
 
 interface DataType {
@@ -36,23 +37,21 @@ function  removeInArray(array: any[], element: any) {
 }
 
 const Cart = () => {
-    const itemCart: CartModel[] = useSelector((state: RootState) => state.cartSlice);
+    const itemCart: CartModel[] = useSelector((state: RootState) => state.cart.items);
     const [items, setItems] = useState<CartModel[]>(itemCart)
     const [qte, setQte] = useState(1);
     const [data, setData] = useState<DataType[]>([]);
     const { toast } = useToast();
     const [total, setTotal] = useState(0);
-    const isAuth = useSelector((state: RootState) => state.authReducer.value.isAuth);
+    const isAuth = useSelector((state: RootState) => state.auth.value.isAuth);
     const dispatch = useDispatch();
-    const router = useRouter()
+    const router = useRouter();
 
     useEffect(() => {
-
        // setItems(itemCart)
-
         setTotal(items.reduce((totals, cartModel ) => totals + cartModel.priceTotal, 0));
         const datas : DataType[] = [];
-        items.forEach((element) => {
+        itemCart.forEach((element) => {
 
             datas.push({
                 key: element.id,
@@ -63,12 +62,36 @@ const Cart = () => {
                 prix_total: element.priceTotal,
                 url: element.image,
             });
-            
         })
 
         setData(datas)
-    }, []);
-    
+    }, [itemCart]);
+
+    const handleDecreaseQuantity = (productId: string) => {
+        const updatedItems = items.map(item => {
+            if (item.id === productId) {
+                const newQuantity = Math.max(item.quantity - 1, 1); // Assurez-vous que la quantité ne devienne pas négative
+                const updatedItem = { ...item, quantity: newQuantity, priceTotal: item.price * newQuantity };
+                dispatch(updateProduct({ index: productId, updatedProduct: updatedItem }));
+                return updatedItem;
+            }
+            return item;
+        });
+        setItems(updatedItems);
+    };
+
+    const handleIncreaseQuantity = (productId: string) => {
+        const updatedItems = items.map(item => {
+            if (item.id === productId) {
+                const newQuantity = item.quantity + 1;
+                const updatedItem = { ...item, quantity: newQuantity, priceTotal: item.price * newQuantity };
+                dispatch(updateProduct({ index: productId, updatedProduct: updatedItem }));
+                return updatedItem;
+            }
+            return item;
+        });
+        setItems(updatedItems);
+    };
 
     const columns: TableProps<DataType>['columns'] = [
         {
@@ -92,22 +115,13 @@ const Cart = () => {
             title: 'Quantité',
            dataIndex: 'quantite',
             key: 'quantite',
-           /* render: (_, record) => {
+            /*render: ( text, record) => {
 
-                return <Space size="middle">
-
-                    <div className={'flex space-x-10 self-center'}>
+                return <div className={'flex space-x-10 self-center'}>
                         <Button variant={'outline'}
                                 size={'icon'}
                                 onClick={() => {
-                                   /* setQte(record.quantite)
-                                    setQte(prevQte => {
-                                        const newQte = prevQte === 0 ? 1 : prevQte - 1;
-                                        const modelCart = new CartModel(record.key, record.name, String(record.url), Number(record.prix_unitaire), Number(record.prix_unitaire * newQte), newQte);
-                                        dispatch(updateProduct({index: record.key, updatedProduct: modelCart}));
-                                        router.refresh();
-                                        return newQte;
-                                    });
+                                    handleDecreaseQuantity(record.key)
                                 }}
                         >
                             <FaMinus className={'w-[18px] h-[18px]'}/>
@@ -115,27 +129,19 @@ const Cart = () => {
 
 
                         <div className={'text-[20px] font-bold'}>
-                            {qte==0 ? record.quantite : qte}
+                            {text}
                         </div>
 
                         <Button variant={'outline'}
                                 size={'icon'}
                                 onClick={() => {
-                                   /* setQte(record.quantite)
-                                    setQte(prevQte => {
-                                        const newQte = prevQte + 1;
-                                        const modelCart = new CartModel(record.key, record.name, String(record.url), Number(record.prix_unitaire), Number(record.prix_unitaire * newQte), newQte);
-                                        dispatch(updateProduct({index: record.key, updatedProduct: modelCart}));
-                                        router.refresh();
-                                        return newQte;
-                                    });
-                                    //setPrice(price + priceTotal);
+                                    handleIncreaseQuantity(record.key)
                                 }}
                         >
                             <FaPlus className={'w-[18]px] h-[18px]'}/>
                         </Button>
                     </div>
-                </Space>
+
             },*/
         },
 
@@ -158,7 +164,8 @@ const Cart = () => {
 
                                 // @ts-ignore
                                 dispatch(removeProduct(record.key))
-                                router.push("/cart");
+
+                                router.refresh()
                                 toast({
                                     title: "Article suprimer",
                                     variant: "destructive"
@@ -274,7 +281,7 @@ const Cart = () => {
 
             {/** cart product list of web */}
             <section className="flex mt-20 mx-2">
-                <Table columns={columns} dataSource={data}/>
+                <Table columns={columns} dataSource={data}  />
             </section>
 
             <div

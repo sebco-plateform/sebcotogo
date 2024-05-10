@@ -95,7 +95,7 @@ export default function Swipers() {
                     data.map((articles, index) => {
                         if (index <= 4) {
 
-                            return <SwiperSlide className={" relative left-[15%] md:left-[35%] md:right-[30%] flex self-center"} key={index}>
+                            return <SwiperSlide className={" relative left-[13%] md:left-[35%] md:right-[30%] flex self-center"} key={index}>
 
                                 <CardArt1 name={articles.name} price={String(articles.price)} description={articles.description} image={articles.imageUrl} id={Number(articles.articleId)} />
 

@@ -16,14 +16,15 @@ const persistConfig = {
     storage,
 };
 
-
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
-    reducer : {
+    reducer: persistedReducer, // Utiliser persistedReducer au lieu de rootReducer
+    /*reducer : {
         authReducer,
         cartSlice,
-    }
-})
+    }*/
+});
+
 // Créer le persisteur Redux
 export const persistor = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>

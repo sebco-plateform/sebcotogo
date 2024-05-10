@@ -25,8 +25,8 @@ interface NavInterface  {
 }
 function NavBar({ style, text_color } : NavInterface) {
     const [currentRoute, setCurrentRoute] = useState("");
-    const isAuth = useSelector((state: RootState) => state.authReducer.value.isAuth)
-    const item = useSelector((state: RootState) => state.cartSlice)
+    const isAuth = useSelector((state: RootState) => state. auth.value.isAuth)
+    const item = useSelector((state: RootState) => state.cart.items)
 
 
     useEffect(() => {

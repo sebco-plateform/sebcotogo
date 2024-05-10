@@ -21,10 +21,10 @@ import {Button} from "antd";
 
 const Order = () => {
 
-    const isAuth = useSelector((state: RootState) => state.authReducer.value.isAuth)
-    const uid = useSelector((state: RootState) => state.authReducer.value.uid)
+    const isAuth = useSelector((state: RootState) => state.auth.value.isAuth)
+    const uid = useSelector((state: RootState) => state.auth.value.uid)
     const {toast} = useToast();
-    const itemCart: CartModel[] = useSelector((state: RootState) => state.cartSlice);
+    const itemCart: CartModel[] = useSelector((state: RootState) => state.cart.items);
     const [total, setTotal] = useState(0)
     const route = useRouter()
     const {
@@ -122,8 +122,8 @@ const Order = () => {
         openKkiapayWidget({
             amount: total,
             fullname: `${customer?.lastName} ${customer?.firstName}`,
-            api_key: process.env.KKIAPAY_API,
-            sandbox: false,
+            api_key: process.env.KKIAPAY_API_SANDBOX,
+            sandbox: true,
             email: `${customer?.email}`,
             //phone: "97000000",
         });

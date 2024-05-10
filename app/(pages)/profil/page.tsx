@@ -2,7 +2,6 @@
 
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
-import Link from "next/link";
 import React, {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {useToast} from "@/components/ui/use-toast";
@@ -13,8 +12,6 @@ import {Api} from "@/api/Api";
 import {useSelector} from "react-redux";
 import {RootState} from "@/redux/store";
 import {ChevronsRight, Mail, Phone, User} from "lucide-react";
-import Image from "next/image";
-import {Skeleton} from "@/components/ui/skeleton";
 import OrderDoneTable from "@/components/OrderDoneTable";
 import OrderGoingTable from "@/components/OrderGoingTable";
 
@@ -33,7 +30,7 @@ export default function Profil()
     const [activeOld, setActiveOld] = useState(false);
     const [activeNew, setActiveNew] = useState(false);
     const [orders, setOrders] = useState<any[]>([])
-    const uid = useSelector((state: RootState) => state.authReducer.value.uid)
+    const uid = useSelector((state: RootState) => state.auth.value.uid);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {

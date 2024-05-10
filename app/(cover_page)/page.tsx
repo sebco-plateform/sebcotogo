@@ -15,6 +15,7 @@ import {RootState} from "@/redux/store";
 import EmptyData from "@/components/EmptyData";
 import { Skeleton } from "@/components/ui/skeleton";
 import CommentSwiper from "@/components/CommentSwiper";
+import {ArrowRightCircle} from "lucide-react";
 
 
 interface articleIterf {
@@ -40,7 +41,7 @@ export default function Home() {
     const [data1, setData1] = useState<DataInterface[]>([])
     const [data2, setData2] = useState<DataInterface[]>([])
     const [data3, setData3] = useState<DataInterface[]>([])
-    const isAuth = useSelector((state: RootState) => state.authReducer.value.isAuth)
+    const isAuth = useSelector((state: RootState) => state.auth.value.isAuth)
     const [loading, setLoading] = useState(false);
     const route = useRouter();
 
@@ -50,7 +51,6 @@ export default function Home() {
         setLoading(true)
 
         Api.getAll('article/all').then((data) => {
-            
             setArticlesData(data)
         })
 
@@ -81,7 +81,7 @@ export default function Home() {
             }
         };
 
-        fetchData1();
+         fetchData1();
 
         const fetchData2 = async () => {
             try {
@@ -178,11 +178,13 @@ export default function Home() {
             {/*button*/}
             <div className={'md:hidden flex ml-[25px]'}>
                 {
-                    !isAuth &&  <Button className={'bg-buttonColor text-[20px] mt-3'}
+                    !isAuth &&  <Button variant={"outline"}
+                                        className={'border-buttonColor flex space-x-5 text-[20px] mt-3'}
                                         size={'lg'}
                                         onClick={() => {route.push("/registre")}}
                     >
-                        S'inscrire maintenant!
+                        <h1>S'inscrire maintenant!</h1>
+                    <ArrowRightCircle />
                     </Button>
                 }
 
@@ -207,6 +209,7 @@ export default function Home() {
                         <h1 className={'text-[18px] text-white mt-[-5px]'}>search</h1>
                     </button>
                 </div>
+                {/*search rendere*/}
                 <div className={`${actif ? 'block bg-white w-[600px] p-5 rounded-[20px] h-auto mt-3 absolute' : 'hidden'} `}>
                     <ul className={"flex flex-col space-y-5"}>
                         {results.map((result, index) => (
@@ -223,31 +226,54 @@ export default function Home() {
             </div>
         </div>
 
-        <div className={'mt-10 md:px-20 pl-x'}>
+        <div className={'mt-10 md:px-20 px-3'}>
 
             <h1 className={'text-[30px] px-3 md:px-0 font-medium text-black'}>
                 Articles
             </h1>
 
             {/*articles*/}
-            <div className={"flex items-center justify-center w-full px-3 md:px-0"}>
+            <div className={"flex items-center justify-center w-full md:px-0"}>
                 <Swipers />
             </div>
-
 
 
             {/*categori serction*/}
             <section className={'mt-[50px]'}>
                 <h1  className={'text-[30px] font-medium text-black'}>Catégories</h1>
 
-
-                <Tabs defaultValue="acier" className="w-auto mt-10">
+                <Tabs defaultValue={data1.length != 0 ? "acier" :  "cimant" } className="w-auto mt-10">
                     <TabsList>
-                        <TabsTrigger value="acier" className={"font-bold text-[18px]"}>acier</TabsTrigger>
-                        <TabsTrigger value="cimant" className={"font-bold text-[18px]"}>cimant</TabsTrigger>
-                        <TabsTrigger value="agérégat" className={"font-bold text-[18px]"}>agérégat</TabsTrigger>
+                        <TabsTrigger value="cimant" className={data2.length == 0 ? "hidden" :"flex font-bold text-[18px]"}>cimant</TabsTrigger>
+                        <TabsTrigger value="acier"   className={data1.length == 0 ? "hidden" :"flex font-bold text-[18px]"}>acier</TabsTrigger>
+                        <TabsTrigger value="agérégat" className={data3.length == 0 ? "hidden" : "flex font-bold text-[18px]"}>agérégat</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="acier" className={'md:px-10 px-3 w-full items-center justify-center  flex flex-col space-y-5 md:space-y-0 md:grid grid-cols-1 md:grid-cols-5 gap-4'}>
+                    <TabsContent value="cimant" className={data2.length == 0 ? "hidden" :'md:px-10 px-3 w-full items-center justify-center flex flex-col space-y-5 md:space-y-0 md:grid grid-cols-1 md:grid-cols-5 gap-4'}>
+                    {
+                        loading ?
+                            [1,2,3,4,5].map((items) => {
+                                return (
+                                    <div>
+                                        <Skeleton className={"rounded-[15px] md:w-[200px] w-[300px]   h-[300px] md:h-[270px]"} />
+                                    </div>
+
+                                )
+                            })
+
+                            :
+                            data2.length == 0 ?
+                                <EmptyData/>
+                                :
+                                data2.map((articles, index) => {
+
+                                    return <div key={index}>
+                                        <Card2 articleName={articles.name} price={Number(articles.price)} id={Number(articles.articleId)} image={articles.imageUrl} />
+                                    </div>
+                                })
+                    }
+
+                </TabsContent>
+                    <TabsContent value="acier" className={data1.length == 0 ? "hidden" :'md:px-10 px-3 w-full items-center justify-center  flex flex-col space-y-5 md:space-y-0 md:grid grid-cols-1 md:grid-cols-5 gap-4'}>
                         {
                             loading ?
                                 [1,2,3,4,5].map((items) => {
@@ -271,32 +297,7 @@ export default function Home() {
                             })
                         } 
                     </TabsContent>
-                    <TabsContent value="cimant" className={'md:px-10 px-3 w-full items-center justify-center flex flex-col space-y-5 md:space-y-0 md:grid grid-cols-1 md:grid-cols-5 gap-4'}>
-                    {
-                        loading ?
-                            [1,2,3,4,5].map((items) => {
-                                return (
-                                    <div>
-                                        <Skeleton className={"rounded-[15px] md:w-[200px] w-[300px]   h-[300px] md:h-[270px]"} />
-                                    </div>
-
-                                )
-                            })
-
-                            :
-                        data2.length == 0 ?
-                            <EmptyData/>
-                             :
-                            data2.map((articles, index) => {
-
-                                return <div key={index}>
-                                    <Card2 articleName={articles.name} price={Number(articles.price)} id={Number(articles.articleId)} image={articles.imageUrl} />
-                                </div>
-                            })
-                        } 
-                        
-                    </TabsContent>
-                    <TabsContent value="agérégat" className={'md:px-10 px-3 w-full items-center justify-center flex flex-col space-y-5 md:space-y-0 md:grid grid-cols-1 md:grid-cols-5 gap-4'}>
+                    <TabsContent value="agérégat" className={data3.length == 0 ? "hidden" : 'md:px-10 px-3 w-full items-center justify-center flex flex-col space-y-5 md:space-y-0 md:grid grid-cols-1 md:grid-cols-5 gap-4'}>
                     {
                         loading ?
                             [1,2,3,4,5].map((items) => {
@@ -326,7 +327,7 @@ export default function Home() {
 
 
             <section className={" my-10"}>
-                <h1 className={'text-[30px] px-3 md:px-0 font-medium text-black'}>
+                <h1 className={'text-[30px] md:px-0 font-medium text-black'}>
                     Avis des clients
                 </h1>
                 <CommentSwiper/>
