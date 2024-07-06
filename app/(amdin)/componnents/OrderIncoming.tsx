@@ -14,14 +14,19 @@ import {Button} from "@/components/ui/button";
 import React, {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {Api} from "@/api/Api";
-import {DropdownMenuGroup, DropdownMenuItem} from "@/components/ui/dropdown-menu";
-import {DropdownMenuDemoAdmin} from "@/app/(amdin)/componnents/DropDwonMenuAdmin";
+import {Select} from "antd";
+import { OrderModel } from "@/app/models/OrderModel";
+import { useToast } from "@/components/ui/use-toast";
+
 
 
 
 const OrderIncoming =() => {
     const [orderData, setOrderData] = useState<any[]>([]);
     const route = useRouter();
+    const { toast } = useToast();
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
 
         Api.getAll("order/all").then((items: any[]) => {
@@ -30,6 +35,29 @@ const OrderIncoming =() => {
         })
     }, []);
 
+    //function appele si la valeur de select change
+    const  handleChange = async (value: any, data: any) => {
+        setLoading(true)
+        const orderModel = new OrderModel(Number(data.totalPrice), value.status, Number(data.user.id), Number(data.delivery.id))
+            const resp = await Api.update(orderModel, `order/update/${data.id}`);
+
+            if(resp.ok) {
+                toast({
+                    title: `La status de la commande a été modifier`
+                })
+            }
+            else {
+                toast({
+                    title: `Une erreur s'est produite lors de la modification`,
+                    description: 'Réessayer!!',
+                    variant: "destructive"
+                });
+                setLoading(false)
+            }
+
+            setLoading(false)
+    };
+
     const tableConstruction = (data: any[]) => {
 
         return data.map((arts) => {
@@ -37,54 +65,39 @@ const OrderIncoming =() => {
             return   <TableRow key={arts.id}>
 
                 <TableCell>{String(arts.createdAt).slice(0, 10)}</TableCell>
-                <TableCell>{String(arts.createdAt).slice(14, 18)}</TableCell>
+                <TableCell>{String(arts.createdAt).slice(14, 19)}</TableCell>
                 <TableCell>{arts.totalPrice}</TableCell>
                 <TableCell>{arts.user.firstName} {arts.user.lastName}</TableCell>
                 <TableCell>{arts.delivery.city} {arts.delivery.quarter}</TableCell>
                 <TableCell>{arts.delivery.deliveryDate}</TableCell>
                 <TableCell>{arts.delivery.deliveryHoures}</TableCell>
-                <TableCell
-                    className={arts.status == "pass" ? "text-blue-600" : "text-red-600"}>{arts.status}</TableCell>
                 {/*actions*/}
                 <TableCell className="">
-                    <DropdownMenuDemoAdmin childrens={
+                <Select
+                            defaultValue={arts.status}
+                            onSelect={ async (value) => {
+                                await handleChange(value, arts);
+                            }}
+                            loading={loading}
+                            options={[
+                                {
+                                    label: "Passer",
+                                    value: "PASS"
+                                },
+                                {
+                                    label: "Délivrer",
+                                    value: "DELIVERED"
+                                },
+                                {
+                                    label: "En cours",
+                                    value: "GOING"
+                                },
 
-                        <DropdownMenuGroup>
-                            <DropdownMenuItem>
-                                <Button variant={"outline"}
-                                        size={"sm"}
-                                        onClick={() => {
-                                            route.push(`/admin/edit_order/${arts.id}`)
-                                        }}
-                                        className={'self-center w-full'}
-                                >
-                                    Editer
-                                </Button>
-                            </DropdownMenuItem>
+                            ]}
+                            className={arts.status == "passer" ? "text-blue-600 bg-white border-none h-[35px] w-[250px]" :  "bg-white border-none h-[35px] w-[250px] text-red-600"}
+                        />
 
-                            <DropdownMenuItem>
-                                <Button type="button"
-                                        variant={'destructive'}
-                                        size={'sm'}
-                                        onClick={ async () => {
-                                            const confirmation: boolean = confirm("Voulez-vous suprimer cette commande?")
-
-                                            if (confirmation) {
-                                                const resp = await Api.remove(`order/delete/${arts.id}`)
-                                            }
-                                        }}
-
-                                >
-                                    Suprimer
-                                </Button>
-
-                            </DropdownMenuItem>
-
-                        </DropdownMenuGroup>
-
-
-                    }/>
-                </TableCell>
+                        </TableCell>
             </TableRow>
         })
 
@@ -104,7 +117,6 @@ const OrderIncoming =() => {
                         <TableHead className="">Date de livraison</TableHead>
                         <TableHead className="">Heure de livraison</TableHead>
                         <TableHead className="">Status</TableHead>
-                        <TableHead className="">Action</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>

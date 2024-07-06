@@ -16,6 +16,7 @@ import EmptyData from "@/components/EmptyData";
 import { Skeleton } from "@/components/ui/skeleton";
 import CommentSwiper from "@/components/CommentSwiper";
 import {ArrowRightCircle} from "lucide-react";
+import { Empty } from "antd";
 
 
 interface articleIterf {
@@ -241,7 +242,9 @@ export default function Home() {
             {/*categori serction*/}
             <section className={'mt-[50px]'}>
                 <h1  className={'text-[30px] font-medium text-black'}>Catégories</h1>
-
+                {
+                    data1.length == 0 && data2.length == 0 && data3.length == 0 && <Empty />
+                }
                 <Tabs defaultValue={data1.length != 0 ? "acier" :  "cimant" } className="w-auto mt-10">
                     <TabsList>
                         <TabsTrigger value="cimant" className={data2.length == 0 ? "hidden" :"flex font-bold text-[18px]"}>cimant</TabsTrigger>

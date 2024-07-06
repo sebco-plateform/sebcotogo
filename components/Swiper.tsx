@@ -15,9 +15,11 @@ import 'swiper/css/navigation';
 // import required modules
 import { Autoplay, Pagination, Navigation, FreeMode } from 'swiper/modules';
 import CardArt1 from "@/components/CardArt1";
-import { Api } from '@/api/Api';
 import { ArticleModel } from '@/app/models/ArticleModel';
 import MobileDetect from 'mobile-detect';
+import { Api } from '@/api/Api';
+import { Skeleton } from './ui/skeleton';
+import { Empty } from 'antd';
 
 interface DataInterface {
     name: string;
@@ -31,7 +33,7 @@ export default function Swipers() {
     const [articleData, setArticleData] = useState<ArticleModel[]>([])
     const [image, setImage] = useState<any[]>([]);
     const [data, setData] = useState<DataInterface[]>([]);
-
+    const [loading, setLoading] = useState(false);
     const [isMobile, setIsMobile] = useState(false)
 
 
@@ -43,6 +45,7 @@ export default function Swipers() {
 
         setIsMobile(!!md.mobile());
 
+        setLoading(true);
         //declaration of thee variable who detecte the screen
         const fetchData = async () => {
             const dataArray: DataInterface[] = [];
@@ -70,6 +73,7 @@ export default function Swipers() {
         }
 
         fetchData();
+        setLoading(false);
 
 
 
@@ -92,6 +96,22 @@ export default function Swipers() {
                 className="mySwiper flex items-center justify-center space-x-5"
             >
                 {
+                    loading ?
+                [1,2,3,4,5].map((items) =>{
+                    return <SwiperSlide className={" relative left-[13%] md:left-[35%] md:right-[30%] flex self-center"} key={items}>
+                        <Skeleton className={" relative left-[13%] md:left-[35%] md:right-[30%] flex self-center"} />
+                    </SwiperSlide>
+                })
+
+                    :
+
+                    data.length == 0 ? 
+
+                    
+                    <Empty className={" relative left-[13%] md:left-[35%] md:right-[30%] flex self-center"} />
+
+                    :
+                    
                     data.map((articles, index) => {
                         if (index <= 4) {
 
