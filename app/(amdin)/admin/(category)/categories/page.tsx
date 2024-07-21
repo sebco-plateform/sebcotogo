@@ -7,11 +7,12 @@ import React, {useEffect, useState} from "react";
 import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {DropdownMenuGroup, DropdownMenuItem} from "@/components/ui/dropdown-menu";
 import {useRouter} from "next/navigation";
-import {Api} from "@/api/Api";
+
 import { useToast } from "@/components/ui/use-toast";
 import Image from "next/image";
 import {DropdownMenuDemoAdmin} from "@/app/(amdin)/componnents/DropDwonMenuAdmin";
-import {CategoryModel} from "@/app/models/Category";
+import {CategoryModel} from "@/models/CategoryModel";
+import { Api } from "@/app/api/Api";
 
 
 export default  function Categories() {
@@ -24,7 +25,7 @@ export default  function Categories() {
     const [categoryData, setCategoryData] = useState<CategoryModel[]>([]);
     const {toast} = useToast();
     useEffect(() => {
-        Api.getAll('category/all').then((cats) => {
+        Api.read('/api/category').then((cats) => {
             setCategoryData(cats);
         })
     }, []);
@@ -36,7 +37,7 @@ export default  function Categories() {
             setQuery(searchTerm);
             // Simulation d'une recherche avec un tableau de données statique
             const filteredResults = categoryData.filter(item =>
-                item.catName.toLowerCase().includes(searchTerm.toLowerCase())
+                item.name.toLowerCase().includes(searchTerm.toLowerCase())
             );
             setResults(filteredResults);
         }
@@ -48,13 +49,15 @@ export default  function Categories() {
 
     };
     const remove = async (id: string) => {
+        
+       /* cartegoryModel.id = Number(id);
         const response =  await Api.remove(`category/delete/${id}`)
         if(response.ok){
          route.refresh()
          toast({
              title: 'Categorie suprimer avec succès'
          })
-        }
+        }*/
      }
 
     const tableConstruction  = (data: CategoryModel[]) => {
@@ -63,7 +66,7 @@ export default  function Categories() {
                 <TableCell>
                     <Image src={arts.imageUrl} alt={""} width={50} height={50} className={"object-cover bg-center"}/>
                 </TableCell>
-                <TableCell>{arts.catName}</TableCell>
+                <TableCell>{arts.name}</TableCell>
                 {/*actions*/}
                 <TableCell className="">
                     <DropdownMenuDemoAdmin childrens={
@@ -90,6 +93,7 @@ export default  function Categories() {
                                             const confirmation: boolean = confirm("Voulez-vous suprimer cette article?")
 
                                             if(confirmation) {
+                                                const cartegoryModel = new CategoryModel(arts.name , arts.imageUrl, arts.description, arts.id, false, false);
                                                 remove(String(arts.id))
                                             }
                                         }}
@@ -150,7 +154,6 @@ export default  function Categories() {
                     <TableRow>
                         <TableHead className="w-[100px]">Image</TableHead>
                         <TableHead className="">Nom</TableHead>
-
                         <TableHead className="">Action</TableHead>
                     </TableRow>
                 </TableHeader>

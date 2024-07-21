@@ -15,7 +15,7 @@ import 'swiper/css/navigation';
 // import required modules
 import { Autoplay, Pagination, Navigation, FreeMode } from 'swiper/modules';
 import CardArt1 from "@/components/CardArt1";
-import { ArticleModel } from '@/app/models/ArticleModel';
+import { ArticleModel } from '@/models/ArticleModel';
 import MobileDetect from 'mobile-detect';
 import { Api } from '@/api/Api';
 import { Skeleton } from './ui/skeleton';

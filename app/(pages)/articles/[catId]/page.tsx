@@ -1,7 +1,7 @@
 "use client"
 import React, {useEffect, useState} from 'react';
 import {Api} from "@/api/Api";
-import {ArticleModel} from "@/app/models/ArticleModel";
+import {ArticleModel} from "@/models/ArticleModel";
 import Card2 from "@/components/Card2";
 import {Skeleton} from "@/components/ui/skeleton";
 import {DataInterface} from "@/lib/interfaces";

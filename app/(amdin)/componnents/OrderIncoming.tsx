@@ -15,7 +15,7 @@ import React, {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {Api} from "@/api/Api";
 import {Select} from "antd";
-import { OrderModel } from "@/app/models/OrderModel";
+import { OrderModel } from "@/models/OrderModel";
 import { useToast } from "@/components/ui/use-toast";
 
 

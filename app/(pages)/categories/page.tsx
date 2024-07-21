@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton"
 import {FaSearch} from "react-icons/fa";
-import {ArticleModel} from "@/app/models/ArticleModel";
+import {ArticleModel} from "@/models/ArticleModel";
 import {Input} from "@/components/ui/input";
 import {Search} from "lucide-react";
 interface DataIntef {

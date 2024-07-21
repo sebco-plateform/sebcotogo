@@ -7,7 +7,7 @@ import {useRouter} from "next/navigation";
 import {useToast} from "@/components/ui/use-toast";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {CustomerModel} from "@/app/models/CustomerModel";
+import {CustomerModel} from "@/models/UserModel";
 import {Api} from "@/api/Api";
 import {useSelector} from "react-redux";
 import {RootState} from "@/redux/store";

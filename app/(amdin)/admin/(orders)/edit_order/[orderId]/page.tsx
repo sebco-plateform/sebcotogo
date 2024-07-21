@@ -11,7 +11,7 @@ import {Select} from "antd";
 import {useToast} from "@/components/ui/use-toast";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import {OrderModel} from "@/app/models/OrderModel";
+import {OrderModel} from "@/models/OrderModel";
 import {useRouter} from "next/navigation"
 
 

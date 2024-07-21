@@ -6,7 +6,7 @@ import Link from "next/link";
 import * as Yup from "yup";
 import { useFormik } from "formik"
 import { useState } from "react";
-import { CustomerModel } from "@/app/models/CustomerModel";
+import { CustomerModel } from "@/models/UserModel";
 import Password from "antd/es/input/Password";
 import { Api } from "@/api/Api";
 import { useRouter } from "next/navigation";

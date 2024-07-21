@@ -7,7 +7,7 @@ import Image from "next/image";
 import * as Yup from "yup";
 import {useFormik} from "formik";
 import {useToast} from "@/components/ui/use-toast";
-import {CustomerModel} from "@/app/models/CustomerModel";
+import {CustomerModel} from "@/models/UserModel";
 import {Api} from "@/api/Api";
 import { useRouter} from "next/navigation";
 

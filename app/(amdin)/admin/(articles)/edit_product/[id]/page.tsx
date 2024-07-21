@@ -11,10 +11,10 @@ import type { SelectProps } from 'antd';
 import {Methodes} from "@/resource_methodes/methodes";
 import { Api } from "@/api/Api";
 import { useToast } from "@/components/ui/use-toast";
-import {ImageModel} from "@/app/models/Image";
-import {ArticleModel} from "@/app/models/Article";
-import {CharacteristicModel} from "@/app/models/characteristic";
-import {CharacteristicArticleModel} from "@/app/models/CharacteristicArticle";
+import {ImageModel} from "@/models/Image";
+import {ArticleModel} from "@/models/ArticleModel";
+import {CharacteristicModel} from "@/models/characteristicModel";
+import {CharacteristicArticleModel} from "@/models/CharacteristicArticle";
 import ImageUpload from "@/app/(amdin)/componnents/image-uploadAdmin";
 
 

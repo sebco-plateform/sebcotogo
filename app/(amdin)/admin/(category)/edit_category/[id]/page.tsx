@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { Api } from "@/api/Api";
 import { useToast } from "@/components/ui/use-toast";
 import {Button} from "antd";
-import {CategoryModel} from "@/app/models/Category";
+import {CategoryModel} from "@/models/CategoryModel";
 import ImageUpload from "@/app/(amdin)/componnents/image-uploadAdmin";
 import {Methodes} from "@/resource_methodes/methodes";
 import {ArrowLeftCircle} from "lucide-react";

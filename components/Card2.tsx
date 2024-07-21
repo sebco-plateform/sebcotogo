@@ -1,5 +1,5 @@
 'use client'
-import { ArticleModel } from "@/app/models/ArticleModel";
+import { ArticleModel } from "@/models/ArticleModel";
 import {Button} from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";

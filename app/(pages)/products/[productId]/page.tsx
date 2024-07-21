@@ -8,9 +8,9 @@ import {useToast} from "@/components/ui/use-toast"
 import {ToastAction} from "@radix-ui/react-toast";
 import {Api} from "@/api/Api";
 import {useDispatch} from "react-redux";
-import CartModel from "@/app/models/CartModel";
+import CartModel from "@/models/CartModel";
 import {addProduct} from "@/redux/features/cart-slice";
-import {ArticleModel} from "@/app/models/ArticleModel";
+import {ArticleModel} from "@/models/ArticleModel";
 import {DataInterface} from "@/lib/interfaces";
 import Image from "next/image";
 

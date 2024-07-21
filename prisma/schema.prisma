@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  firstName String
+  lastName String
+  phone Int
+  email String
+  role RoleType
+  password String
+  isVisible Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:654803093.
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:3182764185.
+model ProductCategory {
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  imageUrl String
+  isVisible  Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Product Product[]
+}
+
+model Characteristic {
+  id Int @id @default(autoincrement())
+  name String
+  value String
+  isVisible  Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ProductCharacteristic ProductCharacteristic[]
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  imageUrl String[]
+  price Float
+  tax Float?
+  categoryId Int
+  ProductCategories ProductCategory @relation(fields: [categoryId], references: [id])
+  isVisible  Boolean @default(true)
+  isActived Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ProductCharacteristic ProductCharacteristic[]
+}
+
+model ProductCharacteristic {
+  id Int @id @default(autoincrement())
+  productId Int
+  characteristicId Int
+  Product Product @relation(fields: [productId], references: [id])
+  Characteristic Characteristic @relation(fields: [characteristicId], references: [id])
+}
+
+enum RoleType {
+  ADMIN
+  GERANT
+  USER
+}
+
+

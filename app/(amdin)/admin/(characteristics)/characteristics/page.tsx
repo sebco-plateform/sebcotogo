@@ -8,10 +8,10 @@ import {Separator} from "@/components/ui/separator";
 import {Input} from "@/components/ui/input";
 import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {DropdownMenuGroup, DropdownMenuItem} from "@/components/ui/dropdown-menu";
-import {Api} from "@/api/Api";
 import { useToast } from "@/components/ui/use-toast";
-import {CharacteristicModel} from "@/app/models/characteristic";
+import {CharacteristicModel} from "@/models/characteristicModel";
 import {DropdownMenuDemoAdmin} from "@/app/(amdin)/componnents/DropDwonMenuAdmin";
+import { Api } from "@/app/api/Api";
 
 
 export default  function Characteristics() {
@@ -22,7 +22,7 @@ export default  function Characteristics() {
     const {toast} =  useToast();
 
     useEffect(() => {
-        Api.getAll('characteristic/all').then((characteristic) => {
+        Api.read('/api/characteristic').then((characteristic) => {
             setCharacteristicData(characteristic);
         })
 
@@ -30,7 +30,7 @@ export default  function Characteristics() {
         
     }, [characteristicData]);
 
-    const remove = async (id: string) => {
+   /* const remove = async (id: string) => {
        const response =  await Api.remove(`characteristic/delete/${id}`)
        if(response.ok){
         route.refresh()
@@ -38,7 +38,7 @@ export default  function Characteristics() {
             title: 'Characteristique suprimer avec succès'
         })
        }
-    }
+    }*/
 
     const handleChange = (e: any) => {
         const searchTerm = e.target.value;
@@ -46,7 +46,7 @@ export default  function Characteristics() {
             setQuery(searchTerm);
             // Simulation d'une recherche avec un tableau de données statique
             const filteredResults = characteristicData.filter(item =>
-                item.charactName.toLowerCase().includes(searchTerm.toLowerCase())
+                item.name.toLowerCase().includes(searchTerm.toLowerCase())
             );
             setResults(filteredResults);
         }
@@ -60,7 +60,7 @@ export default  function Characteristics() {
     const tableConstruction = (data: CharacteristicModel[]) => {
         return  data.map((arts) => (
             <TableRow key={arts.id}>
-                <TableCell>{arts.charactName}</TableCell>
+                <TableCell>{arts.name}</TableCell>
                 <TableCell>{arts.value}</TableCell>
                 {/*actions*/}
                 <TableCell className="">
@@ -86,7 +86,7 @@ export default  function Characteristics() {
                                             const confirmation: boolean = confirm("Voulez-vous suprimer cette article?")
 
                                             if(confirmation) {
-                                                remove(String(arts.id))
+                                               // remove(String(arts.id))
                                             }
                                         }}
                                 
@@ -116,7 +116,7 @@ export default  function Characteristics() {
                 <Button size={'lg'}
                         className={'flex space-x-2'}
                         onClick={() => {
-                            route.push('/add_characteristic')
+                            route.push('/admin/add_characteristic')
                         }}
                 >
                     <PlusCircle className={'h-[15px] w-[15px]'}/>

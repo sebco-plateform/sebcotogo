@@ -7,7 +7,7 @@ import Swipers from "@/components/Swiper";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Card2 from "@/components/Card2";
 import { Api } from "@/api/Api";
-import { ArticleModel } from "../models/ArticleModel";
+import { ArticleModel } from "../../models/ArticleModel";
 import {useRouter} from "next/navigation";
 import Image from "next/image";
 import {useSelector} from "react-redux";

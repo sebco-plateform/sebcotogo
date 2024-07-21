@@ -9,7 +9,7 @@ import {useRouter} from "next/navigation";
 import {Api} from "@/api/Api";
 import {useToast} from "@/components/ui/use-toast";
 import { Button } from "antd";
-import {CharacteristicModel} from "@/app/models/characteristic";
+import {CharacteristicModel} from "@/models/characteristicModel";
 import {ArrowLeftCircle} from "lucide-react";
 
 export default  function AddCategory() {

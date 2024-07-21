@@ -10,7 +10,7 @@ import * as Yup from "yup";
 import { useFormik } from 'formik';
 import {useSelector} from "react-redux";
 import {RootState} from "@/redux/store";
-import {CommentModel} from "@/app/models/CommentModel";
+import {CommentModel} from "@/models/CommentModel";
 import {Api} from "@/api/Api";
 import { useToast } from '@/components/ui/use-toast';
 import Resources from "@/lib/resources";

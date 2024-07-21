@@ -3,7 +3,7 @@ import {Dialog, Transition} from '@headlessui/react'
 import React, {Fragment, useEffect, useState} from 'react'
 import {FaSearch} from "react-icons/fa";
 import {Api} from "@/api/Api";
-import {ArticleModel} from "@/app/models/ArticleModel";
+import {ArticleModel} from "@/models/ArticleModel";
 import Link from "next/link";
 
 interface propsInterface {

@@ -10,11 +10,11 @@ import {Button, Select } from 'antd';
 import { Methodes } from "@/resource_methodes/methodes";
 import { Api } from "@/api/Api";
 import { useToast } from "@/components/ui/use-toast";
-import {CategoryModel} from "@/app/models/Category";
-import {CharacteristicModel} from "@/app/models/characteristic";
-import {ArticleModel} from "@/app/models/Article";
-import {CharacteristicArticleModel} from "@/app/models/CharacteristicArticle";
-import {ImageModel} from "@/app/models/Image";
+import {CategoryModel} from "@/models/CategoryModel";
+import {CharacteristicModel} from "@/models/characteristicModel";
+import {ArticleModel} from "@/models/ArticleModel";
+import {CharacteristicArticleModel} from "@/models/CharacteristicArticle";
+import {ImageModel} from "@/models/Image";
 import ImageUpload from "@/app/(amdin)/componnents/image-uploadAdmin";
 import {ArrowLeftCircle} from "lucide-react";
 import {useRouter} from "next/navigation"

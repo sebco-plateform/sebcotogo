@@ -18,7 +18,7 @@ import React, {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {Api} from "@/api/Api";
 import { useToast } from "@/components/ui/use-toast";
-import {ArticleModel} from "@/app/models/Article";
+import {ArticleModel} from "@/models/ArticleModel";
 import {DropdownMenuDemoAdmin} from "@/app/(amdin)/componnents/DropDwonMenuAdmin";
 
 

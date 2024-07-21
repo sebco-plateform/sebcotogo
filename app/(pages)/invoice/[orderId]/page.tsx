@@ -11,8 +11,8 @@ import { Table} from 'antd';
 import type { TableProps } from 'antd';
 import {useSelector} from "react-redux";
 import {RootState} from "@/redux/store";
-import {CustomerModel} from "@/app/models/CustomerModel";
-import {OrderModel} from "@/app/models/OrderModel";
+import {CustomerModel} from "@/models/UserModel";
+import {OrderModel} from "@/models/OrderModel";
 import {Api} from "@/api/Api";
 
 interface DataType {

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import React, { ReactNode, useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { BsTrash3 } from "react-icons/bs";
-import CartModel from "@/app/models/CartModel";
+import CartModel from "@/models/CartModel";
 import {removeProduct, updateProduct} from "@/redux/features/cart-slice";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
